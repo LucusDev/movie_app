@@ -15,7 +15,6 @@ class CarouselSlider extends StatefulWidget {
     Key? key,
   }) : super(key: key);
 
-
   @override
   State<CarouselSlider> createState() => _CarouselSliderState();
 }
@@ -42,8 +41,13 @@ class _CarouselSliderState extends State<CarouselSlider> {
   Widget build(BuildContext context) {
     return FutureBuilder<Result<List<Movie>>>(
         future: future,
-        initialData: const Result.success([]),
+        initialData: null,
         builder: (context, shot) {
+          if (shot.data == null) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
           List<Movie> data = [];
           if (shot.data != null) {
             shot.data!.when(

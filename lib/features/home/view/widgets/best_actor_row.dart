@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:helper/helper.dart';
 import 'package:movie_app/core/models/people.dart';
@@ -18,7 +17,7 @@ class _BestActorRowState extends State<BestActorRow> {
   Widget build(BuildContext context) {
     return FutureBuilder<Result<List<People>>>(
         future: future,
-        initialData: const Result.success([]),
+        initialData: null,
         builder: (context, shot) {
           if (shot.data == null) {
             return const Center(
