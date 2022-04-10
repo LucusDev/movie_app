@@ -10,7 +10,6 @@ class GenreMovieRow extends StatefulWidget {
     Key? key,
   }) : super(key: key);
 
-
   @override
   State<GenreMovieRow> createState() => _GenreMovieRowState();
 }
@@ -106,6 +105,7 @@ class _GenreMovieRowState extends State<GenreMovieRow> {
                         itemBuilder: (context, index) {
                           return MovieCard(
                             movie: list.elementAt(index),
+                            isTop: index == 0,
                           );
                         },
                         scrollDirection: Axis.horizontal,
