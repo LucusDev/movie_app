@@ -15,6 +15,8 @@ class GenreMovieRow extends StatefulWidget {
 }
 
 class _GenreMovieRowState extends State<GenreMovieRow> {
+  List<Movie> movieList = [];
+
   final future = HomeRepo.getGenres();
   Optional<int> currentGenre = const Optional.notAvaliable();
   @override
@@ -24,8 +26,11 @@ class _GenreMovieRowState extends State<GenreMovieRow> {
         future: future,
         builder: (context, shot) {
           if (shot.data == null) {
-            return const Center(
-              child: CircularProgressIndicator(),
+            return const SizedBox(
+              height: 200,
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
             );
           }
           List<Genres> list = [];
@@ -55,6 +60,7 @@ class _GenreMovieRowState extends State<GenreMovieRow> {
                           onClick: () {
                             setState(() {
                               currentGenre = Optional.auto(e.id);
+                              movieList = [];
                             });
                           },
                           text: e.name ?? "",
@@ -72,6 +78,11 @@ class _GenreMovieRowState extends State<GenreMovieRow> {
               AspectRatio(
                 aspectRatio: 3 / 2,
                 child: FutureBuilder<Result<List<Movie>>>(
+                    key: currentGenre.map(avaliable: (value) {
+                      return ObjectKey(value.value);
+                    }, notAvaliable: (_) {
+                      return const ObjectKey(-1);
+                    }),
                     future: currentGenre.map(avaliable: (value) {
                       return HomeRepo.getGenreMovie(value.value);
                     }, notAvaliable: (_) {
@@ -84,10 +95,9 @@ class _GenreMovieRowState extends State<GenreMovieRow> {
                           child: CircularProgressIndicator(),
                         );
                       }
-                      List<Movie> list = [];
                       shot.data!.when(
                         success: (value) {
-                          list = value;
+                          movieList = value;
                           currentGenre.whenOrNull(
                             notAvaliable: () {
                               currentGenre = Optional.auto(value.first.id);
@@ -96,7 +106,7 @@ class _GenreMovieRowState extends State<GenreMovieRow> {
                         },
                         error: (message) {},
                       );
-                      if (list.isEmpty) {
+                      if (movieList.isEmpty) {
                         return const Center(
                           child: CircularProgressIndicator(),
                         );
@@ -104,12 +114,12 @@ class _GenreMovieRowState extends State<GenreMovieRow> {
                       return ListView.builder(
                         itemBuilder: (context, index) {
                           return MovieCard(
-                            movie: list.elementAt(index),
+                            movie: movieList.elementAt(index),
                             isTop: index == 0,
                           );
                         },
                         scrollDirection: Axis.horizontal,
-                        itemCount: list.length,
+                        itemCount: movieList.length,
                       );
                     }),
               ),

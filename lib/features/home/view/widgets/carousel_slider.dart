@@ -44,8 +44,11 @@ class _CarouselSliderState extends State<CarouselSlider> {
         initialData: null,
         builder: (context, shot) {
           if (shot.data == null) {
-            return const Center(
-              child: CircularProgressIndicator(),
+            return const SizedBox(
+              height: 200,
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
             );
           }
           List<Movie> data = [];
@@ -67,26 +70,28 @@ class _CarouselSliderState extends State<CarouselSlider> {
                     final item = data.elementAt(index);
                     return GestureDetector(
                       onTap: () async {
-                        final data = await loading(
-                          context,
-                          MovieRepo.getMovieDetail(id: item.id ?? 0),
-                        );
-                        data.when(
-                          success: (value) {
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) {
-                                return DetailPage(
-                                  movieDetail: value,
-                                );
-                              },
-                            ));
-                          },
-                          error: (reason) {
-                            if (kDebugMode) {
-                              print(reason);
-                            }
-                          },
-                        );
+                        try {
+                          final data = await loading(
+                            context,
+                            MovieRepo.getMovieDetail(id: item.id ?? 0),
+                          );
+                          data.when(
+                            success: (value) {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) {
+                                  return DetailPage(
+                                    movieDetail: value,
+                                  );
+                                },
+                              ));
+                            },
+                            error: (reason) {
+                              if (kDebugMode) {
+                                print(reason);
+                              }
+                            },
+                          );
+                        } catch (_) {}
                       },
                       child: Stack(
                         children: [

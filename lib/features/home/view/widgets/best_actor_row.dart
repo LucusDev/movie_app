@@ -20,8 +20,11 @@ class _BestActorRowState extends State<BestActorRow> {
         initialData: null,
         builder: (context, shot) {
           if (shot.data == null) {
-            return const Center(
-              child: CircularProgressIndicator(),
+            return const SizedBox(
+              height: 200,
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
             );
           }
           List<People> list = [];

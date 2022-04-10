@@ -98,24 +98,26 @@ class _ShowCaseRowState extends State<ShowCaseRow> {
                         final item = list.elementAt(index);
                         return GestureDetector(
                           onTap: () async {
-                            final data = await loading(context,
-                                MovieRepo.getMovieDetail(id: item.id ?? 0));
-                            data.when(
-                              success: (value) {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) {
-                                    return DetailPage(
-                                      movieDetail: value,
-                                    );
-                                  },
-                                ));
-                              },
-                              error: (reason) {
-                                if (kDebugMode) {
-                                  print(reason);
-                                }
-                              },
-                            );
+                            try {
+                              final data = await loading(context,
+                                  MovieRepo.getMovieDetail(id: item.id ?? 0));
+                              data.when(
+                                success: (value) {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) {
+                                      return DetailPage(
+                                        movieDetail: value,
+                                      );
+                                    },
+                                  ));
+                                },
+                                error: (reason) {
+                                  if (kDebugMode) {
+                                    print(reason);
+                                  }
+                                },
+                              );
+                            } catch (_) {}
                           },
                           child: Padding(
                             padding: const EdgeInsets.only(right: 20.0),

@@ -21,24 +21,26 @@ class MovieCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
-        final data =
-            await loading(context, MovieRepo.getMovieDetail(id: movie.id ?? 0));
-        data.when(
-          success: (value) {
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) {
-                return DetailPage(
-                  movieDetail: value,
-                );
-              },
-            ));
-          },
-          error: (reason) {
-            if (kDebugMode) {
-              print(reason);
-            }
-          },
-        );
+        try {
+          final data = await loading(
+              context, MovieRepo.getMovieDetail(id: movie.id ?? 0));
+          data.when(
+            success: (value) {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) {
+                  return DetailPage(
+                    movieDetail: value,
+                  );
+                },
+              ));
+            },
+            error: (reason) {
+              if (kDebugMode) {
+                print(reason);
+              }
+            },
+          );
+        } catch (_) {}
       },
       child: AspectRatio(
         aspectRatio: 10 / 16,
