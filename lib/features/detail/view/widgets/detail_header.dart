@@ -2,20 +2,30 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:movie_app/core/constant.dart';
+import 'package:movie_app/core/models/movie.dart';
 
 class DetailHeader extends StatelessWidget {
-  const DetailHeader({Key? key}) : super(key: key);
+  final Movie movie;
+  const DetailHeader({
+    Key? key,
+    required this.movie,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SliverPersistentHeader(
-      delegate: DetailHeaderDelegate(),
+      delegate: DetailHeaderDelegate(movie: movie),
       pinned: true,
     );
   }
 }
 
 class DetailHeaderDelegate extends SliverPersistentHeaderDelegate {
+  DetailHeaderDelegate({
+    required this.movie,
+  });
+  final Movie movie;
+
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
@@ -35,13 +45,16 @@ class DetailHeaderDelegate extends SliverPersistentHeaderDelegate {
                       Constant.primaryColor,
                     ],
                     stops: [
-                      0.7,
+                      0.4,
                       1,
                     ]).createShader(bounds);
               },
               child: CachedNetworkImage(
-                imageUrl: "/odVv1sqVs0KxBXiA8bhIBlPgalx.jpg".getImageUrl,
+                imageUrl: movie.posterPath!.getImageUrl,
                 fit: BoxFit.cover,
+                errorWidget: (BuildContext context, String reason, dynamic _) {
+                  return const SizedBox.shrink();
+                },
               ),
             ),
           ),
@@ -61,6 +74,7 @@ class DetailHeaderDelegate extends SliverPersistentHeaderDelegate {
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Opacity(
                     opacity: (1 - shrinkOffset / (maxExtent * 0.5)).clamp(0, 1),
@@ -72,7 +86,7 @@ class DetailHeaderDelegate extends SliverPersistentHeaderDelegate {
                             horizontal: 18,
                             vertical: 9,
                           ),
-                          child: Text("2016"),
+                          child: Text(movie.releaseDate?.getYear ?? ""),
                           decoration: BoxDecoration(
                             gradient: Constant.mainGradient,
                             borderRadius: BorderRadius.circular(500),
@@ -85,19 +99,13 @@ class DetailHeaderDelegate extends SliverPersistentHeaderDelegate {
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 Row(
-                                  children: List.filled(
-                                      5,
-                                      const Icon(
-                                        FontAwesomeIcons.solidStar,
-                                        color: Colors.amber,
-                                        size: 10,
-                                      )),
+                                  children: [...getStar(movie.voteAverage)],
                                 ),
                                 const SizedBox(height: 5),
                                 Text(
-                                  "30000 VOTES",
+                                  "${movie.voteCount ?? 0} VOTES",
                                   style: TextStyle(
-                                    color: Colors.white.withOpacity(0.45),
+                                    color: Colors.white.withOpacity(0.6),
                                   ),
                                 ),
                               ],
@@ -106,7 +114,7 @@ class DetailHeaderDelegate extends SliverPersistentHeaderDelegate {
                               width: 10,
                             ),
                             Text(
-                              "9,75",
+                              "${movie.popularity?.round() ?? 0}",
                               style: TextStyle(
                                 color: Colors.white.withOpacity(0.85),
                                 fontSize: 50,
@@ -119,10 +127,10 @@ class DetailHeaderDelegate extends SliverPersistentHeaderDelegate {
                   ),
                   Opacity(
                     opacity: (1 - shrinkOffset / (maxExtent * 0.5)).clamp(0, 1),
-                    child: const Text(
-                      "this is the series aaaaaa aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                    child: Text(
+                      movie.title ?? "",
                       maxLines: 2,
-                      style: TextStyle(
+                      style: const TextStyle(
                         // color: Colors.amber,
                         fontSize: 25,
                       ),
@@ -137,32 +145,30 @@ class DetailHeaderDelegate extends SliverPersistentHeaderDelegate {
             elevation: 0,
             backgroundColor: Colors.transparent,
             centerTitle: true,
-            leading:
-                //  Navigator.canPop(context)
-                true
-                    ? Center(
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
-                          child: Container(
-                            child: const Icon(Icons.keyboard_arrow_left),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(500),
-                              color: Colors.black.withOpacity(0.7),
-                            ),
-                            padding: const EdgeInsets.all(5),
-                          ),
+            leading: Navigator.canPop(context)
+                ? Center(
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Container(
+                        child: const Icon(Icons.keyboard_arrow_left),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(500),
+                          color: Colors.black.withOpacity(0.7),
                         ),
-                      )
-                    : null,
+                        padding: const EdgeInsets.all(5),
+                      ),
+                    ),
+                  )
+                : null,
             leadingWidth: 50,
             title: Opacity(
               opacity: ((shrinkOffset / (maxExtent * 0.5))).clamp(0, 1),
-              child: const Text(
-                "this is the series aaaaaa aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              child: Text(
+                movie.title ?? "",
                 maxLines: 2,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 20,
                 ),
               ),
@@ -192,4 +198,45 @@ class DetailHeaderDelegate extends SliverPersistentHeaderDelegate {
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
     return true;
   }
+}
+
+List<Widget> getStar(double? average) {
+  if (average == null) {
+    return List.filled(
+      5,
+      const Icon(
+        Icons.star_border,
+        color: Colors.amber,
+        size: 15,
+      ),
+    );
+  }
+  final rating = average / 2;
+  int fullStarCount = rating.floor();
+  final isHalfStar = (rating - fullStarCount) != 0;
+
+  final list = List.filled(
+    5,
+    const Icon(
+      Icons.star_border,
+      color: Colors.amber,
+      size: 15,
+    ),
+    growable: true,
+  );
+  for (int i = 0; i < fullStarCount; i++) {
+    list[i] = const Icon(
+      Icons.star,
+      color: Colors.amber,
+      size: 15,
+    );
+  }
+  if (isHalfStar) {
+    list[fullStarCount] = const Icon(
+      Icons.star_half,
+      color: Colors.amber,
+      size: 15,
+    );
+  }
+  return list;
 }

@@ -1,34 +1,44 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:helper/helper.dart';
 import 'package:movie_app/core/constant.dart';
+import 'package:movie_app/core/models/movie.dart';
 import 'package:movie_app/core/widgets/loading.dart';
+import 'package:movie_app/features/detail/model/network/movie_repo.dart';
 import 'package:movie_app/features/detail/view/detail_page.dart';
-
-Future<Result<String>> a() async {
-  await Future.delayed(Duration(seconds: 5));
-  return Result.success("come on");
-}
+import 'package:movie_app/features/detail/view/widgets/detail_header.dart';
 
 class MovieCard extends StatelessWidget {
+  final Movie movie;
+  final bool isTop;
   const MovieCard({
     Key? key,
-    required this.imageList,
+    required this.movie,
+    this.isTop = false,
   }) : super(key: key);
-
-  final List<String> imageList;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
-        await loading(context, a());
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) {
-            return const DetailPage();
+        final data =
+            await loading(context, MovieRepo.getMovieDetail(id: movie.id ?? 0));
+        data.when(
+          success: (value) {
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) {
+                return DetailPage(
+                  movieDetail: value,
+                );
+              },
+            ));
           },
-        ));
+          error: (reason) {
+            if (kDebugMode) {
+              print(reason);
+            }
+          },
+        );
       },
       child: AspectRatio(
         aspectRatio: 10 / 16,
@@ -41,53 +51,45 @@ class MovieCard extends StatelessWidget {
                   children: [
                     Positioned.fill(
                       child: CachedNetworkImage(
-                        imageUrl: imageList.elementAt(3),
+                        imageUrl: movie.posterPath?.getImageUrl ?? "",
                         fit: BoxFit.cover,
+                        errorWidget:
+                            (BuildContext context, String reason, dynamic _) {
+                          return const SizedBox.shrink();
+                        },
                       ),
                     ),
-                    Positioned(
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 18,
-                          vertical: 9,
+                    if (isTop)
+                      Positioned(
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 18,
+                            vertical: 9,
+                          ),
+                          child: const Text("TOP"),
+                          decoration: BoxDecoration(
+                            gradient: Constant.mainGradient,
+                            borderRadius: BorderRadius.circular(500),
+                          ),
                         ),
-                        child: const Text("TOP"),
-                        decoration: BoxDecoration(
-                          gradient: Constant.mainGradient,
-                          borderRadius: BorderRadius.circular(500),
-                        ),
+                        left: 10,
+                        top: 10,
                       ),
-                      left: 10,
-                      top: 10,
-                    )
                   ],
                 ),
                 aspectRatio: 15 / 20,
               ),
               Text(
-                "WestWorld",
+                movie.title ?? (movie.originalTitle ?? ""),
                 maxLines: 1,
               ),
               Row(
                 children: [
-                  Text("8,20"),
+                  Text((movie.voteAverage ?? 0).toString()),
                   const SizedBox(
                     width: 5,
                   ),
-                  ...List.filled(
-                      5,
-                      Row(
-                        children: const [
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Icon(
-                            FontAwesomeIcons.solidStar,
-                            color: Colors.amber,
-                            size: 10,
-                          ),
-                        ],
-                      ))
+                  ...getStar(movie.voteAverage)
                 ],
               ),
               const SizedBox(

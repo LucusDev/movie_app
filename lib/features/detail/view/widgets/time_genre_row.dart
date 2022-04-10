@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:movie_app/core/constant.dart';
+import 'package:movie_app/core/models/movie.dart';
 import 'package:movie_app/features/detail/view/widgets/genre_button.dart';
 
 class TimeGenreRow extends StatelessWidget {
+  final Movie movie;
   const TimeGenreRow({
     Key? key,
+    required this.movie,
   }) : super(key: key);
 
   @override
@@ -21,16 +24,11 @@ class TimeGenreRow extends StatelessWidget {
             MdiIcons.clockTimeTwoOutline,
             color: Constant.secondColor,
           ),
-          Text("2h 13min"),
+          Text(movie.runtime?.getMovieDuration ?? ""),
           const SizedBox(
             width: 5,
           ),
-          GenreButton(text: "Family"),
-          GenreButton(text: "Family"),
-          GenreButton(text: "Family"),
-          GenreButton(text: "Family"),
-          GenreButton(text: "Family"),
-          GenreButton(text: "Family"),
+          ...movie.genres?.map((e) => GenreButton(text: e.name ?? "")) ?? [],
           const SizedBox(
             width: 5,
           ),

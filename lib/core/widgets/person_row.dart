@@ -1,16 +1,20 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_app/core/constant.dart';
+import 'package:movie_app/core/models/people.dart';
 
 class PersonRow extends StatelessWidget {
   final bool isMore;
   final String type;
   final Color backgroundColor;
+
+  final List<People> peopleList;
   const PersonRow({
     Key? key,
     this.isMore = false,
     required this.type,
     this.backgroundColor = Constant.primaryColorLight,
+    required this.peopleList,
   }) : super(key: key);
 
   @override
@@ -52,6 +56,7 @@ class PersonRow extends StatelessWidget {
                 left: 15,
               ),
               itemBuilder: (context, index) {
+                final people = peopleList.elementAt(index);
                 return Padding(
                   padding: const EdgeInsets.only(right: 20.0),
                   child: Stack(
@@ -76,9 +81,12 @@ class PersonRow extends StatelessWidget {
                           child: AspectRatio(
                             aspectRatio: 2 / 3,
                             child: CachedNetworkImage(
-                              imageUrl: "/odVv1sqVs0KxBXiA8bhIBlPgalx.jpg"
-                                  .getImageUrl,
+                              imageUrl: people.profilePath?.getImageUrl ?? "",
                               fit: BoxFit.cover,
+                              errorWidget: (BuildContext context, String reason,
+                                  dynamic _) {
+                                return const SizedBox.shrink();
+                              },
                             ),
                           ),
                         ),
@@ -98,10 +106,10 @@ class PersonRow extends StatelessWidget {
                               mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text(
-                                  "Eddie Redmayne",
+                                Text(
+                                  people.name ?? "",
                                   maxLines: 1,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 18,
                                   ),
                                 ),
@@ -138,7 +146,7 @@ class PersonRow extends StatelessWidget {
                   ),
                 );
               },
-              itemCount: 20,
+              itemCount: peopleList.length,
             ),
           ),
         ],

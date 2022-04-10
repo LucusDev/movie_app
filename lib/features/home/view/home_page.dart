@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:icofont_flutter/icofont_flutter.dart';
 import 'package:movie_app/core/constant.dart';
-import 'package:movie_app/core/widgets/person_row.dart';
+import 'package:movie_app/features/home/view/widgets/best_actor_row.dart';
 import 'package:movie_app/features/home/view/widgets/carousel_slider.dart';
 import 'package:movie_app/features/home/view/widgets/check_movie_time.dart';
 import 'package:movie_app/features/home/view/widgets/genre_movie_row.dart';
@@ -25,17 +25,13 @@ class HomePage extends StatelessWidget {
           child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            CarouselSlider(imageList: imageList),
-            PopularFilms(imageList: imageList),
-            const CheckMovieTime(),
-            GenreMovieRow(imageList: imageList),
-            const ShowCaseRow(type: "SHOWCASES"),
-            const PersonRow(
-              type: "BEST ACTORS",
-              isMore: true,
-              backgroundColor: Colors.transparent,
-            ),
+          children: const [
+            CarouselSlider(),
+            PopularFilms(),
+            CheckMovieTime(),
+            GenreMovieRow(),
+            ShowCaseRow(type: "SHOWCASES"),
+            BestActorRow(),
           ],
         ),
       )),
@@ -47,7 +43,9 @@ class HomePage extends StatelessWidget {
         actions: const [
           Padding(
             padding: EdgeInsets.all(8.0),
-            child: Icon(FontAwesomeIcons.magnifyingGlass),
+            child: Icon(
+              FontAwesomeIcons.magnifyingGlass,
+            ),
           ),
         ],
       ),

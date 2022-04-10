@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:movie_app/core/constant.dart';
-import 'package:movie_app/features/detail/view/detail_page.dart';
+import 'package:helper/helper.dart';
+import 'package:movie_app/core/models/movie.dart';
+import 'package:movie_app/features/home/model/network/home_repo.dart';
+
 import 'package:movie_app/features/home/view/widgets/movie_card.dart';
 
 class PopularFilms extends StatelessWidget {
   const PopularFilms({
     Key? key,
-    required this.imageList,
   }) : super(key: key);
-
-  final List<String> imageList;
 
   @override
   Widget build(BuildContext context) {
@@ -31,18 +29,54 @@ class PopularFilms extends StatelessWidget {
           const SizedBox(
             height: 20,
           ),
-          AspectRatio(
+          const AspectRatio(
             aspectRatio: 7 / 5,
-            child: ListView.builder(
-              itemBuilder: (context, index) {
-                return MovieCard(imageList: imageList);
-              },
-              scrollDirection: Axis.horizontal,
-              itemCount: 40,
-            ),
+            child: PopularFilmList(),
           )
         ],
       ),
     );
+  }
+}
+
+class PopularFilmList extends StatefulWidget {
+  const PopularFilmList({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  State<PopularFilmList> createState() => _PopularFilmListState();
+}
+
+class _PopularFilmListState extends State<PopularFilmList> {
+  final future = HomeRepo.getPopular();
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<Result<List<Movie>>>(
+        initialData: null,
+        future: future,
+        builder: (context, shot) {
+          if (shot.data == null) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          List<Movie> list = [];
+          shot.data!.when(
+              success: (value) {
+                list = value;
+              },
+              error: (message) {});
+          return ListView.builder(
+            itemBuilder: (context, index) {
+              return MovieCard(
+                movie: list.elementAt(index),
+                isTop: index == 0,
+              );
+            },
+            scrollDirection: Axis.horizontal,
+            itemCount: list.length,
+          );
+        });
   }
 }

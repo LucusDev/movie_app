@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:movie_app/core/constant.dart';
+import 'package:movie_app/core/models/movie.dart';
 
 class FilmDetail extends StatefulWidget {
+  final Movie movie;
+
   const FilmDetail({
     Key? key,
+    required this.movie,
   }) : super(key: key);
 
   @override
@@ -15,6 +19,7 @@ class _FilmDetailState extends State<FilmDetail> {
 
   @override
   Widget build(BuildContext context) {
+    final movie = widget.movie;
     return Padding(
       padding: const EdgeInsets.all(15.0),
       child: Column(
@@ -45,7 +50,7 @@ class _FilmDetailState extends State<FilmDetail> {
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.7,
                 child: Text(
-                  "aaaaaaa aaaaaa aaaaaaaaaaaaaaaaa aaaaaaaaa aaaaaaaaaaaa",
+                  movie.originalTitle ?? "",
                 ),
               ),
             ],
@@ -69,7 +74,10 @@ class _FilmDetailState extends State<FilmDetail> {
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.7,
                 child: Text(
-                  "aaaaaaa aaaaaa aaaaaaaaaaaaaaaaa aaaaaaaaa aaaaaaaaaaaa",
+                  movie.genres?.map((e) => e.name).join(
+                            " , ",
+                          ) ??
+                      "",
                 ),
               ),
             ],
@@ -93,7 +101,10 @@ class _FilmDetailState extends State<FilmDetail> {
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.7,
                 child: Text(
-                  "aaaaaaa aaaaaa aaaaaaaaaaaaaaaaa aaaaaaaaa aaaaaaaaaaaa",
+                  movie.productionCountries
+                          ?.map((e) => e.name ?? "")
+                          .join(" , ") ??
+                      "",
                 ),
               ),
             ],
@@ -117,7 +128,7 @@ class _FilmDetailState extends State<FilmDetail> {
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.7,
                 child: Text(
-                  "aaaaaaa aaaaaa aaaaaaaaaaaaaaaaa aaaaaaaaa aaaaaaaaaaaa",
+                  movie.releaseDate?.date ?? "",
                 ),
               ),
             ],
@@ -143,14 +154,13 @@ class _FilmDetailState extends State<FilmDetail> {
                 child: Wrap(
                   children: [
                     Text(
-                      "orem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+                      movie.overview ?? "",
                       maxLines: isOpen ? 999 : 5,
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(),
                     ),
                     if (hasTextOverflow(
-                      text:
-                          "orem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+                      text: movie.overview ?? "",
                       style: const TextStyle(),
                       maxWidth: MediaQuery.of(context).size.width * 0.7,
                     ))
