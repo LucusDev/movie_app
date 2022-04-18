@@ -2,37 +2,42 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:icofont_flutter/icofont_flutter.dart';
 import 'package:movie_app/core/constant.dart';
-import 'package:movie_app/features/home/view/widgets/best_actor_row.dart';
-import 'package:movie_app/features/home/view/widgets/carousel_slider.dart';
-import 'package:movie_app/features/home/view/widgets/check_movie_time.dart';
-import 'package:movie_app/features/home/view/widgets/genre_movie_row.dart';
-import 'package:movie_app/features/home/view/widgets/popular_films.dart';
-import 'package:movie_app/features/home/view/widgets/showcase_row.dart';
+import 'package:movie_app/features/home/view/widgets/widgets.dart';
 
-class HomePage extends StatelessWidget {
-  final List<String> imageList = const [
-    "https://cdn.pixabay.com/photo/2017/12/03/18/04/christmas-balls-2995437_960_720.jpg",
-    "https://cdn.pixabay.com/photo/2017/12/13/00/23/christmas-3015776_960_720.jpg",
-    "https://cdn.pixabay.com/photo/2019/12/19/10/55/christmas-market-4705877_960_720.jpg",
-    "https://cdn.pixabay.com/photo/2019/12/20/00/03/road-4707345_960_720.jpg",
-  ];
+class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  int refreshCount = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-          child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
-            CarouselSlider(),
-            PopularFilms(),
-            CheckMovieTime(),
-            GenreMovieRow(),
-            ShowCaseRow(type: "SHOWCASES"),
-            BestActorRow(),
-          ],
+          child: RefreshIndicator(
+        color: Constant.secondColorDark,
+        backgroundColor: Constant.primaryColorLight,
+        onRefresh: () async {
+          setState(() {
+            refreshCount++;
+          });
+        },
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CarouselSlider(key: ValueKey(refreshCount)),
+              PopularFilms(key: ValueKey(refreshCount + 1)),
+              CheckMovieTime(key: ValueKey(refreshCount + 2)),
+              GenreMovieRow(key: ValueKey(refreshCount + 3)),
+              ShowCaseRow(type: "SHOWCASES", key: ValueKey(refreshCount + 4)),
+              BestActorRow(key: ValueKey(refreshCount + 5)),
+            ],
+          ),
         ),
       )),
       appBar: AppBar(

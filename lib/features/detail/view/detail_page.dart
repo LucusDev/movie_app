@@ -1,13 +1,6 @@
 import 'package:flutter/material.dart';
-
 import 'package:movie_app/core/widgets/person_row.dart';
-import 'package:movie_app/features/detail/model/models/movie_detail.dart';
-
-import 'package:movie_app/features/detail/view/widgets/detail_header.dart';
-import 'package:movie_app/features/detail/view/widgets/film_detail.dart';
-
-import 'package:movie_app/features/detail/view/widgets/storyline.dart';
-import 'package:movie_app/features/detail/view/widgets/time_genre_row.dart';
+import 'package:movie_app/features/detail/view/widgets/widgets.dart';
 
 class DetailPage extends StatelessWidget {
   final MovieDetail movieDetail;

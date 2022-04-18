@@ -35,31 +35,33 @@ class StoryLine extends StatelessWidget {
           const SizedBox(
             height: 15,
           ),
-          Row(
-            children: [
-              DetailButton(
-                icon: Icon(
-                  Icons.play_circle,
-                  color: Colors.black.withOpacity(0.4),
+          SingleChildScrollView(
+            child: Row(
+              children: [
+                DetailButton(
+                  icon: Icon(
+                    Icons.play_circle,
+                    color: Colors.black.withOpacity(0.4),
+                  ),
+                  gradient: Constant.mainGradient,
+                  onPressed: () {},
+                  child: const Text("PLAY TRAILER"),
                 ),
-                gradient: Constant.mainGradient,
-                onPressed: () {},
-                child: const Text("PLAY TRAILER"),
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-              DetailButton(
-                isOutlined: true,
-                icon: const Icon(
-                  Icons.star,
-                  color: Constant.secondColor,
+                const SizedBox(
+                  width: 10,
                 ),
-                gradient: Constant.mainGradient,
-                onPressed: () {},
-                child: const Text("RATE MOVIE"),
-              ),
-            ],
+                DetailButton(
+                  isOutlined: true,
+                  icon: const Icon(
+                    Icons.star,
+                    color: Constant.secondColor,
+                  ),
+                  gradient: Constant.mainGradient,
+                  onPressed: () {},
+                  child: const Text("RATE MOVIE"),
+                ),
+              ],
+            ),
           ),
         ],
       ),
