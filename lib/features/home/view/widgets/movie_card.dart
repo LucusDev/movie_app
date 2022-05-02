@@ -1,10 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_app/core/constant.dart';
 import 'package:movie_app/core/models/movie.dart';
-import 'package:movie_app/core/widgets/loading.dart';
-import 'package:movie_app/features/detail/model/network/movie_repo.dart';
 import 'package:movie_app/features/detail/view/detail_page.dart';
 import 'package:movie_app/features/detail/view/widgets/detail_header.dart';
 
@@ -21,26 +18,13 @@ class MovieCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
-        try {
-          final data = await loading(
-              context, MovieRepo.getMovieDetail(id: movie.id ?? 0));
-          data.when(
-            success: (value) {
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) {
-                  return DetailPage(
-                    movieDetail: value,
-                  );
-                },
-              ));
-            },
-            error: (reason) {
-              if (kDebugMode) {
-                print(reason);
-              }
-            },
-          );
-        } catch (_) {}
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) {
+            return DetailPage(
+              id: movie.id ?? 0,
+            );
+          },
+        ));
       },
       child: AspectRatio(
         aspectRatio: 10 / 16,
