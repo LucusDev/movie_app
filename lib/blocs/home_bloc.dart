@@ -9,8 +9,11 @@ class HomeBloc extends ChangeNotifier {
   List<Movie>? mPopularFilmList;
   List<Movie>? mShowCaseList;
   List<People>? mBestActorList;
+  List<Genres>? mGenreList;
+  List<Movie>? mMoviesByGenreList;
 
   HomeBloc() {
+    ///Now Playing Fetch
     HomeRepo.getNowPlaying().then((result) {
       result.when(
           success: (value) {
@@ -19,6 +22,8 @@ class HomeBloc extends ChangeNotifier {
           },
           error: (message) {});
     });
+
+    ///Get Popular Fetch
     HomeRepo.getPopular().then((result) {
       result.when(
           success: (value) {
@@ -27,6 +32,8 @@ class HomeBloc extends ChangeNotifier {
           },
           error: (message) {});
     });
+
+    ///Get ShowCases Fetch
     HomeRepo.getShowcases().then((result) {
       result.when(
           success: (value) {
@@ -35,10 +42,47 @@ class HomeBloc extends ChangeNotifier {
           },
           error: (message) {});
     });
+
+    ///GetBest Actors Fetch
     HomeRepo.getBestActors().then((result) {
       result.when(
           success: (value) {
             mBestActorList = value;
+            notifyListeners();
+          },
+          error: (message) {});
+    });
+
+    ///Get Genre Fetch
+    HomeRepo.getGenres().then((result) {
+      result.when(
+          success: (value) {
+            mGenreList = value;
+            notifyListeners();
+          },
+          error: (message) {});
+
+      ///Get Movies by Genre Fetch
+      if (mGenreList != null) {
+        HomeRepo.getGenreMovie(mGenreList!.first.id ?? 0).then((result) {
+          result.when(
+              success: (value) {
+                mMoviesByGenreList = value;
+                notifyListeners();
+              },
+              error: (message) {});
+        });
+      }
+    });
+  }
+
+  void onGenreClick(int id) {
+    mMoviesByGenreList = null;
+    notifyListeners();
+    HomeRepo.getGenreMovie(id).then((result) {
+      result.when(
+          success: (value) {
+            mMoviesByGenreList = value;
             notifyListeners();
           },
           error: (message) {});

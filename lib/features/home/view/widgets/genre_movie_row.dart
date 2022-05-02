@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:helper/helper.dart';
+import 'package:movie_app/blocs/home_bloc.dart';
 import 'package:movie_app/core/constant.dart';
 import 'package:movie_app/core/models/movie.dart';
-import 'package:movie_app/features/home/model/network/home_repo.dart';
 import 'package:movie_app/features/home/view/widgets/movie_card.dart';
+import 'package:provider/provider.dart';
 
 class GenreMovieRow extends StatefulWidget {
+  final List<Movie> list;
+  final List<Genres> genres;
   const GenreMovieRow({
     Key? key,
+    required this.list,
+    required this.genres,
   }) : super(key: key);
 
   @override
@@ -15,117 +20,69 @@ class GenreMovieRow extends StatefulWidget {
 }
 
 class _GenreMovieRowState extends State<GenreMovieRow> {
-  List<Movie> movieList = [];
-
-  final future = HomeRepo.getGenres();
   Optional<int> currentGenre = const Optional.notAvaliable();
+  bool isFirst = true;
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<Result<List<Genres>>>(
-        initialData: null,
-        future: future,
-        builder: (context, shot) {
-          if (shot.data == null) {
-            return const SizedBox(
-              height: 200,
-              child: Center(
-                child: CircularProgressIndicator(),
-              ),
-            );
-          }
-          List<Genres> list = [];
-          shot.data!.when(
-            success: (value) {
-              list = value;
-              currentGenre.whenOrNull(
-                notAvaliable: () {
-                  currentGenre = Optional.auto(value.first.id);
-                },
-              );
-            },
-            error: (message) {},
-          );
-          return Column(
-            children: [
-              Container(
-                color: Constant.primaryColorLight,
-                child: SingleChildScrollView(
+    final movieList = widget.list;
+    final genreList = widget.genres;
+
+    return Column(
+      children: [
+        Container(
+          color: Constant.primaryColorLight,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ...genreList.map((e) {
+                  return GenreTag(
+                    backgroundColor: Colors.transparent,
+                    onClick: () {
+                      final bloc =
+                          Provider.of<HomeBloc>(context, listen: false);
+                      bloc.onGenreClick(e.id ?? 0);
+                      setState(() {
+                        currentGenre = Optional.auto(e.id);
+                      });
+                    },
+                    text: e.name ?? "",
+                    isActive: currentGenre.map(avaliable: (value) {
+                      return value.value == (e.id ?? -99999);
+                    }, notAvaliable: (_) {
+                      if (isFirst) {
+                        currentGenre = Optional.auto(e.id);
+                        isFirst = false;
+                        return true;
+                      }
+                      return false;
+                    }),
+                  );
+                })
+              ],
+            ),
+          ),
+        ),
+        AspectRatio(
+          aspectRatio: 3 / 2,
+          child: movieList.isEmpty
+              ? const Center(
+                  child: CircularProgressIndicator(),
+                )
+              : ListView.builder(
+                  itemBuilder: (context, index) {
+                    return MovieCard(
+                      movie: movieList.elementAt(index),
+                      isTop: index == 0,
+                    );
+                  },
                   scrollDirection: Axis.horizontal,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      ...list.asMap().values.map((e) {
-                        return GenreTag(
-                          backgroundColor: Colors.transparent,
-                          onClick: () {
-                            setState(() {
-                              currentGenre = Optional.auto(e.id);
-                              movieList = [];
-                            });
-                          },
-                          text: e.name ?? "",
-                          isActive: currentGenre.map(avaliable: (value) {
-                            return value.value == (e.id ?? -99999);
-                          }, notAvaliable: (_) {
-                            return false;
-                          }),
-                        );
-                      })
-                    ],
-                  ),
+                  itemCount: movieList.length,
                 ),
-              ),
-              AspectRatio(
-                aspectRatio: 3 / 2,
-                child: FutureBuilder<Result<List<Movie>>>(
-                    key: currentGenre.map(avaliable: (value) {
-                      return ObjectKey(value.value);
-                    }, notAvaliable: (_) {
-                      return const ObjectKey(-1);
-                    }),
-                    future: currentGenre.map(avaliable: (value) {
-                      return HomeRepo.getGenreMovie(value.value);
-                    }, notAvaliable: (_) {
-                      return null;
-                    }),
-                    initialData: null,
-                    builder: (context, shot) {
-                      if (shot.data == null) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
-                      shot.data!.when(
-                        success: (value) {
-                          movieList = value;
-                          currentGenre.whenOrNull(
-                            notAvaliable: () {
-                              currentGenre = Optional.auto(value.first.id);
-                            },
-                          );
-                        },
-                        error: (message) {},
-                      );
-                      if (movieList.isEmpty) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
-                      return ListView.builder(
-                        itemBuilder: (context, index) {
-                          return MovieCard(
-                            movie: movieList.elementAt(index),
-                            isTop: index == 0,
-                          );
-                        },
-                        scrollDirection: Axis.horizontal,
-                        itemCount: movieList.length,
-                      );
-                    }),
-              ),
-            ],
-          );
-        });
+        ),
+      ],
+    );
   }
 }
 

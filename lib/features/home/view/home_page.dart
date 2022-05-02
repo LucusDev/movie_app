@@ -71,7 +71,26 @@ class _HomePageState extends State<HomePage> {
                 const CheckMovieTime(),
 
                 ///Genre Section
-                GenreMovieRow(key: ValueKey(refreshCount + 3)),
+                Selector<HomeBloc, List<Genres>?>(
+                    selector: (context, bloc) => bloc.mGenreList,
+                    builder: (context, genreList, _) {
+                      return genreList == null
+                          ? const SizedBox(
+                              height: 200,
+                              child: Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                            )
+                          : Selector<HomeBloc, List<Movie>?>(
+                              selector: (context, bloc) =>
+                                  bloc.mMoviesByGenreList,
+                              builder: (context, movielist, _) {
+                                return GenreMovieRow(
+                                  genres: genreList,
+                                  list: movielist ?? [],
+                                );
+                              });
+                    }),
 
                 ///ShowCase Section
                 Selector<HomeBloc, List<Movie>?>(
