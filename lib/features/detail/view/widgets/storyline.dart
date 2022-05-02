@@ -45,7 +45,10 @@ class StoryLine extends StatelessWidget {
                   ),
                   gradient: Constant.mainGradient,
                   onPressed: () {},
-                  child: const Text("PLAY TRAILER"),
+                  child: const Text(
+                    "PLAY TRAILER",
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
                 const SizedBox(
                   width: 10,

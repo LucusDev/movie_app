@@ -28,7 +28,6 @@ class _CarouselSliderState extends State<CarouselSlider> {
   double index = 0;
   @override
   void initState() {
-    Constant.apiKey;
     super.initState();
     controller.addListener(() {
       setState(() {
