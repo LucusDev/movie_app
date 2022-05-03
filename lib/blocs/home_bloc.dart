@@ -15,6 +15,9 @@ class HomeBloc extends ChangeNotifier {
   String? error;
 
   HomeBloc() {
+    fetch();
+  }
+  fetch() {
     ///Now Playing Fetch
     HomeRepo.getNowPlaying().then((result) {
       result.when(
@@ -86,6 +89,7 @@ class HomeBloc extends ChangeNotifier {
       }
     });
   }
+
   void cleanError() {
     error = null;
     notifyListeners();
@@ -103,6 +107,18 @@ class HomeBloc extends ChangeNotifier {
         notifyListeners();
       });
     });
+  }
+
+  void refresh() {
+    mNowPlayingMovieList = null;
+    mPopularFilmList = null;
+    mShowCaseList = null;
+    mBestActorList = null;
+    mGenreList = null;
+    mMoviesByGenreList = null;
+    error = null;
+    notifyListeners();
+    fetch();
   }
 }
 

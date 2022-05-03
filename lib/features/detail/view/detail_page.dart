@@ -20,73 +20,73 @@ class DetailPage extends StatelessWidget {
           return Selector<DetailBloc, MovieDetail?>(
               selector: (context, bloc) => bloc.movieDetail,
               builder: (context, movieDetail, _) {
-                return movieDetail == null
-                    ? const Center(
-                        child: CircularProgressIndicator(),
-                      )
-                    : Selector<DetailBloc, String?>(
-                        selector: (p0, p1) => p1.error,
-                        builder: (context, message, _) {
-                          return Stack(
-                            children: [
-                              Scaffold(
-                                body: SafeArea(
-                                  child: CustomScrollView(
-                                    slivers: [
-                                      ///Detail Header
-                                      DetailHeader(movie: movieDetail.movie),
+                return Selector<DetailBloc, String?>(
+                    selector: (p0, p1) => p1.error,
+                    builder: (context, message, _) {
+                      return Stack(
+                        children: [
+                          movieDetail == null
+                              ? const Center(
+                                  child: CircularProgressIndicator(),
+                                )
+                              : Scaffold(
+                                  body: SafeArea(
+                                    child: CustomScrollView(
+                                      slivers: [
+                                        ///Detail Header
+                                        DetailHeader(movie: movieDetail.movie),
 
-                                      ///Convert Widgets to Sliver
-                                      SliverList(
-                                        delegate: SliverChildListDelegate(
-                                          [
-                                            ///Genre and Total Duration Section
-                                            TimeGenreRow(
-                                                movie: movieDetail.movie),
+                                        ///Convert Widgets to Sliver
+                                        SliverList(
+                                          delegate: SliverChildListDelegate(
+                                            [
+                                              ///Genre and Total Duration Section
+                                              TimeGenreRow(
+                                                  movie: movieDetail.movie),
 
-                                            ///StoryLine Section View
-                                            StoryLine(
-                                                storyline: movieDetail
-                                                        .movie.overview ??
-                                                    ""),
+                                              ///StoryLine Section View
+                                              StoryLine(
+                                                  storyline: movieDetail
+                                                          .movie.overview ??
+                                                      ""),
 
-                                            ///Actors Section
-                                            PersonRow(
-                                              type: "ACTORS",
-                                              peopleList: movieDetail.cast,
-                                            ),
+                                              ///Actors Section
+                                              PersonRow(
+                                                type: "ACTORS",
+                                                peopleList: movieDetail.cast,
+                                              ),
 
-                                            ///Film Detail Section
-                                            FilmDetail(
-                                                movie: movieDetail.movie),
+                                              ///Film Detail Section
+                                              FilmDetail(
+                                                  movie: movieDetail.movie),
 
-                                            ///Creators Section
-                                            PersonRow(
-                                              isMore: true,
-                                              type: "CREATORS",
-                                              peopleList: movieDetail.crew,
-                                            ),
-                                          ],
-                                        ),
-                                      )
-                                    ],
+                                              ///Creators Section
+                                              PersonRow(
+                                                isMore: true,
+                                                type: "CREATORS",
+                                                peopleList: movieDetail.crew,
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
-                              //Error Message Dialog
-                              if (message != null)
-                                Positioned.fill(
-                                  child: dl.Dialog(
-                                      message: message,
-                                      onOK: () {
-                                        Provider.of<DetailBloc>(context,
-                                                listen: false)
-                                            .cleanError();
-                                      }),
-                                ),
-                            ],
-                          );
-                        });
+                          //Error Message Dialog
+                          if (message != null)
+                            Positioned.fill(
+                              child: dl.Dialog(
+                                  message: message,
+                                  onOK: () {
+                                    Provider.of<DetailBloc>(context,
+                                            listen: false)
+                                        .cleanError();
+                                  }),
+                            ),
+                        ],
+                      );
+                    });
               });
         });
   }

@@ -10,4 +10,5 @@ abstract class RetrofitAgent {
   Future<List<MovieVO>> getMovieByGenre(int id);
   Future<List<MovieVO>> getShowCase();
   Future<MovieVO> getMovieDetail(int id);
+  
 }
