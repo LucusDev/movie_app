@@ -39,4 +39,9 @@ void main() async {
       print(value.map((e) => e.toJson()).toString());
     });
   });
+  test("get movie detail", () async {
+    await RetrofitAgentImpl().getMovieDetail(335787).then((value) {
+      print(value.toJson());
+    });
+  });
 }

@@ -57,4 +57,9 @@ class RetrofitAgentImpl extends RetrofitAgent {
         .map((event) => event.results)
         .first;
   }
+
+  @override
+  Future<MovieVO> getMovieDetail(int id) {
+    return movierepo.getMovieDetail(id);
+  }
 }
