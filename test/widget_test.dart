@@ -11,37 +11,37 @@ import 'package:movie_app/network/data_agents/retrofit_agent_impl.dart';
 
 void main() async {
   test("get now playing", () async {
-    await RetrofitAgentImpl.get().getNowPlaying().then((value) {
+    await RetrofitAgentImpl().getNowPlaying().then((value) {
       print(value.map((e) => e.toJson()).toString());
     });
   });
   test("get best actors", () async {
-    await RetrofitAgentImpl.get().getBestActors().then((value) {
+    await RetrofitAgentImpl().getBestActors().then((value) {
       print(value.map((e) => e.toJson()).toString());
     });
   });
   test("get Genres", () async {
-    await RetrofitAgentImpl.get().getGenres().then((value) {
+    await RetrofitAgentImpl().getGenres().then((value) {
       print(value.map((e) => e.toJson()).toString());
     });
   });
   test("get movie by genre", () async {
-    await RetrofitAgentImpl.get().getMovieByGenre(28).then((value) {
+    await RetrofitAgentImpl().getMovieByGenre(28).then((value) {
       print(value.map((e) => e.toJson()).toString());
     });
   });
   test("get popularmovies", () async {
-    await RetrofitAgentImpl.get().getPopularMovies().then((value) {
+    await RetrofitAgentImpl().getPopularMovies().then((value) {
       print(value.map((e) => e.toJson()).toString());
     });
   });
   test("get showcases", () async {
-    await RetrofitAgentImpl.get().getShowCase().then((value) {
+    await RetrofitAgentImpl().getShowCase().then((value) {
       print(value.map((e) => e.toJson()).toString());
     });
   });
   test("get movie detail", () async {
-    await RetrofitAgentImpl.get().getMovieDetail(335787).then((value) {
+    await RetrofitAgentImpl().getMovieDetail(335787).then((value) {
       print(value.toJson());
     });
   });

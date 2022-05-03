@@ -11,7 +11,7 @@ class RetrofitAgentImpl extends RetrofitAgent {
 
   RetrofitAgentImpl._();
 
-  factory RetrofitAgentImpl.get() {
+  factory RetrofitAgentImpl() {
     singleton ??= RetrofitAgentImpl._();
     return singleton!;
   }
