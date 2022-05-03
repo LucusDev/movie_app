@@ -9,13 +9,13 @@ import 'package:movie_app/network/response/popular_movie_result.dart';
 import 'package:movie_app/network/response/show_case_result.dart';
 import 'package:retrofit/retrofit.dart';
 
-part 'network_client.g.dart';
+part 'the_movie_api.g.dart';
 
 @RestApi(
   baseUrl: baseUrl,
 )
-abstract class RestClient {
-  factory RestClient(Dio dio, {String baseUrl}) = _RestClient;
+abstract class TheMovieApi {
+  factory TheMovieApi(Dio dio, {String baseUrl}) = _TheMovieApi;
 
   @GET(getNowPlayingEndpoint)
   Future<NowPlayingResult> getNowPlaying();

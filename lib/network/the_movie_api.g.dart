@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'network_client.dart';
+part of 'the_movie_api.dart';
 
 // **************************************************************************
 // RetrofitGenerator
@@ -8,8 +8,8 @@ part of 'network_client.dart';
 
 // ignore_for_file: unnecessary_brace_in_string_interps
 
-class _RestClient implements RestClient {
-  _RestClient(this._dio, {this.baseUrl}) {
+class _TheMovieApi implements TheMovieApi {
+  _TheMovieApi(this._dio, {this.baseUrl}) {
     baseUrl ??= 'https://api.themoviedb.org/3/';
   }
 

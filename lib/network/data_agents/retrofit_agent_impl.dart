@@ -3,11 +3,11 @@ import 'package:movie_app/data/vos/genre_vo.dart';
 import 'package:movie_app/data/vos/movie_vo.dart';
 import 'package:movie_app/data/vos/people_vo.dart';
 import 'package:movie_app/network/data_agents/retrofit_agent.dart';
-import 'package:movie_app/network/network_client.dart';
+import 'package:movie_app/network/the_movie_api.dart';
 
 class RetrofitAgentImpl extends RetrofitAgent {
   static RetrofitAgentImpl? singleton;
-  final RestClient movieClient = RestClient(Dio());
+  final TheMovieApi movieClient = TheMovieApi(Dio());
 
   RetrofitAgentImpl._();
 
