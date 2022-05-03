@@ -5,6 +5,7 @@ import 'package:movie_app/blocs/home_bloc.dart';
 import 'package:movie_app/core/constant.dart';
 import 'package:movie_app/core/models/movie.dart';
 import 'package:movie_app/core/models/people.dart';
+import 'package:movie_app/core/widgets/dialog.dart' as dl;
 import 'package:movie_app/core/widgets/person_row.dart';
 import 'package:movie_app/features/home/view/widgets/widgets.dart';
 import 'package:provider/provider.dart';
@@ -25,101 +26,120 @@ class _HomePageState extends State<HomePage> {
       builder: (context, child) => child!,
       child: Scaffold(
         body: SafeArea(
-            child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            child: Selector<HomeBloc, String?>(selector: (p0, p1) {
+          return p1.error;
+        }, builder: (context, message, _) {
+          return Stack(
             children: [
-              ///NowPlayingMovie Section
-              Selector<HomeBloc, List<Movie>?>(
-                  selector: (context, bloc) => bloc.mNowPlayingMovieList,
-                  builder: (context, list, _) {
-                    return list == null
-                        ? const SizedBox(
-                            height: 200,
-                            child: Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                          )
-                        : NowPlayingMovieSectionView(list: list);
-                  }),
+              SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ///NowPlayingMovie Section
+                    Selector<HomeBloc, List<Movie>?>(
+                        selector: (context, bloc) => bloc.mNowPlayingMovieList,
+                        builder: (context, list, _) {
+                          return list == null
+                              ? const SizedBox(
+                                  height: 200,
+                                  child: Center(
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                )
+                              : NowPlayingMovieSectionView(list: list);
+                        }),
 
-              ///Popular Section
-              Selector<HomeBloc, List<Movie>?>(
-                  selector: (context, bloc) => bloc.mPopularFilmList,
-                  builder: (context, list, _) {
-                    return list == null
-                        ? const SizedBox(
-                            height: 200,
-                            child: Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                          )
-                        : PopularMovieSectionView(list: list);
-                  }),
+                    ///Popular Section
+                    Selector<HomeBloc, List<Movie>?>(
+                        selector: (context, bloc) => bloc.mPopularFilmList,
+                        builder: (context, list, _) {
+                          return list == null
+                              ? const SizedBox(
+                                  height: 200,
+                                  child: Center(
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                )
+                              : PopularMovieSectionView(list: list);
+                        }),
 
-              ///CheckMovie Section
-              const CheckMovieTime(),
+                    ///CheckMovie Section
+                    const CheckMovieTime(),
 
-              ///Genre Section
-              Selector<HomeBloc, List<Genres>?>(
-                  selector: (context, bloc) => bloc.mGenreList,
-                  builder: (context, genreList, _) {
-                    return genreList == null
-                        ? const SizedBox(
-                            height: 200,
-                            child: Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                          )
-                        : Selector<HomeBloc, List<Movie>?>(
-                            selector: (context, bloc) =>
-                                bloc.mMoviesByGenreList,
-                            builder: (context, movielist, _) {
-                              return GenreMovieRow(
-                                genres: genreList,
-                                list: movielist ?? [],
-                              );
-                            });
-                  }),
+                    ///Genre Section
+                    Selector<HomeBloc, List<Genres>?>(
+                        selector: (context, bloc) => bloc.mGenreList,
+                        builder: (context, genreList, _) {
+                          return genreList == null
+                              ? const SizedBox(
+                                  height: 200,
+                                  child: Center(
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                )
+                              : Selector<HomeBloc, List<Movie>?>(
+                                  selector: (context, bloc) =>
+                                      bloc.mMoviesByGenreList,
+                                  builder: (context, movielist, _) {
+                                    return GenreMovieRow(
+                                      genres: genreList,
+                                      list: movielist ?? [],
+                                    );
+                                  });
+                        }),
 
-              ///ShowCase Section
-              Selector<HomeBloc, List<Movie>?>(
-                  selector: (context, bloc) => bloc.mShowCaseList,
-                  builder: (context, list, _) {
-                    return list == null
-                        ? const SizedBox(
-                            height: 200,
-                            child: Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                          )
-                        : ShowCaseRow(
-                            type: "SHOWCASES",
-                            list: list,
-                          );
-                  }),
+                    ///ShowCase Section
+                    Selector<HomeBloc, List<Movie>?>(
+                        selector: (context, bloc) => bloc.mShowCaseList,
+                        builder: (context, list, _) {
+                          return list == null
+                              ? const SizedBox(
+                                  height: 200,
+                                  child: Center(
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                )
+                              : ShowCaseRow(
+                                  type: "SHOWCASES",
+                                  list: list,
+                                );
+                        }),
 
-              ///BestActors Section
-              Selector<HomeBloc, List<People>?>(
-                  selector: (context, bloc) => bloc.mBestActorList,
-                  builder: (context, list, _) {
-                    return list == null
-                        ? const SizedBox(
-                            height: 200,
-                            child: Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                          )
-                        : PersonRow(
-                            type: "BEST ACTORS",
-                            isMore: true,
-                            backgroundColor: Colors.transparent,
-                            peopleList: list,
-                          );
-                  }),
+                    ///BestActors Section
+                    Selector<HomeBloc, List<People>?>(
+                        selector: (context, bloc) => bloc.mBestActorList,
+                        builder: (context, list, _) {
+                          return list == null
+                              ? const SizedBox(
+                                  height: 200,
+                                  child: Center(
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                )
+                              : PersonRow(
+                                  type: "BEST ACTORS",
+                                  isMore: true,
+                                  backgroundColor: Colors.transparent,
+                                  peopleList: list,
+                                );
+                        }),
+                  ],
+                ),
+              ),
+
+              ///Error Message Dialog
+              if (message != null)
+                Positioned.fill(
+                  child: dl.Dialog(
+                      message: message,
+                      onOK: () {
+                        Provider.of<HomeBloc>(context, listen: false)
+                            .cleanError();
+                      }),
+                ),
             ],
-          ),
-        )),
+          );
+        })),
         appBar: AppBar(
           backgroundColor: Constant.primaryColor,
           title: const Text("Discover"),
