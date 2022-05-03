@@ -17,3 +17,6 @@ const genreEndpoint = "/genre/movie/list?language=en-US&api_key=$apiKey";
 
 const movieByGenreEndpoint =
     "/discover/movie?language=en-US&page=1&api_key=$apiKey";
+
+const movieDetailEndpoint =
+    "/movie/{id}?append_to_response=credits&api_key=$apiKey";

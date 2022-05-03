@@ -6,11 +6,19 @@ import 'package:movie_app/network/data_agents/retrofit_agent.dart';
 import 'package:movie_app/network/network_client.dart';
 
 class RetrofitAgentImpl extends RetrofitAgent {
-  final RestClient movierepo = RestClient(Dio());
+  static RetrofitAgentImpl? singleton;
+  final RestClient movieClient = RestClient(Dio());
+
+  RetrofitAgentImpl._();
+
+  factory RetrofitAgentImpl() {
+    singleton ??= RetrofitAgentImpl._();
+    return singleton!;
+  }
 
   @override
   Future<List<MovieVO>> getNowPlaying() {
-    return movierepo
+    return movieClient
         .getNowPlaying()
         .asStream()
         .map((event) => event.results)
@@ -19,7 +27,7 @@ class RetrofitAgentImpl extends RetrofitAgent {
 
   @override
   Future<List<MovieVO>> getPopularMovies() {
-    return movierepo
+    return movieClient
         .getPopularMovies()
         .asStream()
         .map((event) => event.results)
@@ -28,7 +36,7 @@ class RetrofitAgentImpl extends RetrofitAgent {
 
   @override
   Future<List<PeopleVO>> getBestActors() {
-    return movierepo
+    return movieClient
         .getBestActors()
         .asStream()
         .map((event) => event.results)
@@ -37,12 +45,16 @@ class RetrofitAgentImpl extends RetrofitAgent {
 
   @override
   Future<List<GenreVO>> getGenres() {
-    return movierepo.getGenres().asStream().map((event) => event.results).first;
+    return movieClient
+        .getGenres()
+        .asStream()
+        .map((event) => event.results)
+        .first;
   }
 
   @override
   Future<List<MovieVO>> getMovieByGenre(int id) {
-    return movierepo
+    return movieClient
         .getMovieByGenre(id.toString())
         .asStream()
         .map((event) => event.results)
@@ -51,10 +63,15 @@ class RetrofitAgentImpl extends RetrofitAgent {
 
   @override
   Future<List<MovieVO>> getShowCase() {
-    return movierepo
+    return movieClient
         .getShowCaseMovie()
         .asStream()
         .map((event) => event.results)
         .first;
+  }
+
+  @override
+  Future<MovieVO> getMovieDetail(int id) {
+    return movieClient.getMovieDetail(id);
   }
 }

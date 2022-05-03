@@ -5,6 +5,7 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
+// ignore_for_file: avoid_print
 import 'package:flutter_test/flutter_test.dart';
 import 'package:movie_app/network/data_agents/retrofit_agent_impl.dart';
 
@@ -37,6 +38,11 @@ void main() async {
   test("get showcases", () async {
     await RetrofitAgentImpl().getShowCase().then((value) {
       print(value.map((e) => e.toJson()).toString());
+    });
+  });
+  test("get movie detail", () async {
+    await RetrofitAgentImpl().getMovieDetail(335787).then((value) {
+      print(value.toJson());
     });
   });
 }

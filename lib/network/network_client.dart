@@ -3,6 +3,7 @@ import 'package:movie_app/network/api_constants.dart';
 import 'package:movie_app/network/response/best_actors_result.dart';
 import 'package:movie_app/network/response/genre_result.dart';
 import 'package:movie_app/network/response/movie_by_genre_result.dart';
+import 'package:movie_app/network/response/movie_detail_result.dart';
 import 'package:movie_app/network/response/now_playing_result.dart';
 import 'package:movie_app/network/response/popular_movie_result.dart';
 import 'package:movie_app/network/response/show_case_result.dart';
@@ -32,5 +33,9 @@ abstract class RestClient {
   Future<GenreResult> getGenres();
 
   @GET(movieByGenreEndpoint)
-  Future<MovieByGenreResult> getMovieByGenre(@Path("with_genres") String id);
+  Future<MovieByGenreResult> getMovieByGenre(
+      @Query("with_genres") String genreId);
+
+  @GET(movieDetailEndpoint)
+  Future<MovieDetailResult> getMovieDetail(@Path() int id);
 }
