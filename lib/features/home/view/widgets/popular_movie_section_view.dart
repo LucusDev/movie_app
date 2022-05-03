@@ -3,9 +3,9 @@ import 'package:movie_app/core/models/movie.dart';
 
 import 'package:movie_app/features/home/view/widgets/movie_card.dart';
 
-class PopularFilms extends StatelessWidget {
+class PopularMovieSectionView extends StatelessWidget {
   final List<Movie> list;
-  const PopularFilms({
+  const PopularMovieSectionView({
     Key? key,
     required this.list,
   }) : super(key: key);
@@ -20,15 +20,20 @@ class PopularFilms extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          ///Title for popular films
           Text(
             "BEST POPULAR FILMS AND SERIALS",
             style: TextStyle(
               color: Colors.white.withOpacity(0.4),
             ),
           ),
+
+          ///Separator
           const SizedBox(
             height: 20,
           ),
+
+          ///List for popular films
           AspectRatio(
             aspectRatio: 7 / 5,
             child: ListView.builder(

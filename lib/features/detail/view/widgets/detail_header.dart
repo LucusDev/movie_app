@@ -31,6 +31,7 @@ class DetailHeaderDelegate extends SliverPersistentHeaderDelegate {
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Stack(
       children: [
+        ///Gradient with Background Image
         Positioned.fill(
           child: Opacity(
             opacity: (1 - shrinkOffset / (maxExtent)).clamp(0, 1),
@@ -59,12 +60,16 @@ class DetailHeaderDelegate extends SliverPersistentHeaderDelegate {
             ),
           ),
         ),
+
+        ///Helper for Transition to color from Image
         Positioned.fill(
           child: Opacity(
             opacity: (shrinkOffset / (maxExtent)).clamp(0, 1),
             child: Container(color: Constant.primaryColor),
           ),
         ),
+
+        ///Expanded appbar
         if (shrinkOffset < maxExtent * 0.4)
           Positioned.fill(
               child: Padding(
@@ -81,6 +86,7 @@ class DetailHeaderDelegate extends SliverPersistentHeaderDelegate {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+                        ///Release Date
                         Container(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 18,
@@ -98,10 +104,13 @@ class DetailHeaderDelegate extends SliverPersistentHeaderDelegate {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
+                                ///Stars
                                 Row(
                                   children: [...getStar(movie.voteAverage)],
                                 ),
                                 const SizedBox(height: 5),
+
+                                ///Votes
                                 Text(
                                   "${movie.voteCount ?? 0} VOTES",
                                   style: TextStyle(
@@ -113,6 +122,8 @@ class DetailHeaderDelegate extends SliverPersistentHeaderDelegate {
                             const SizedBox(
                               width: 10,
                             ),
+
+                            ///Populartiy score
                             Text(
                               "${movie.popularity?.round() ?? 0}",
                               style: TextStyle(
@@ -125,6 +136,8 @@ class DetailHeaderDelegate extends SliverPersistentHeaderDelegate {
                       ],
                     ),
                   ),
+
+                  ///Movie Title
                   Opacity(
                     opacity: (1 - shrinkOffset / (maxExtent * 0.5)).clamp(0, 1),
                     child: Text(
@@ -140,6 +153,8 @@ class DetailHeaderDelegate extends SliverPersistentHeaderDelegate {
               ),
             ),
           )),
+
+        ///Shrink appbar
         Positioned(
           child: AppBar(
             elevation: 0,

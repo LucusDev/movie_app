@@ -20,18 +20,27 @@ class TimeGenreRow extends StatelessWidget {
         crossAxisAlignment: WrapCrossAlignment.center,
         spacing: 5,
         children: [
+          ///Movie TIme Icon
           const Icon(
             MdiIcons.clockTimeTwoOutline,
             color: Constant.secondColor,
           ),
+
+          ///Movie Duration
           Text(movie.runtime?.getMovieDuration ?? ""),
+
+          ///Separator
           const SizedBox(
             width: 5,
           ),
+
+          ///Genre Row
           ...movie.genres?.map((e) => GenreButton(text: e.name ?? "")) ?? [],
           const SizedBox(
             width: 5,
           ),
+
+          ///Favourite Icon
           const Icon(Icons.favorite_border),
         ],
       ),

@@ -25,15 +25,20 @@ class _FilmDetailState extends State<FilmDetail> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          ///About Film
           Text(
             "ABOUT FILM",
             style: TextStyle(
               color: Colors.white.withOpacity(0.6),
             ),
           ),
+
+          ///Separator
           const SizedBox(
             height: 10,
           ),
+
+          ///TItle
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -55,9 +60,13 @@ class _FilmDetailState extends State<FilmDetail> {
               ),
             ],
           ),
+
+          ///Separator
           const SizedBox(
             height: 10,
           ),
+
+          ///Movie Type
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -82,9 +91,13 @@ class _FilmDetailState extends State<FilmDetail> {
               ),
             ],
           ),
+
+          ///Separator
           const SizedBox(
             height: 10,
           ),
+
+          ///Production Widget
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -109,9 +122,13 @@ class _FilmDetailState extends State<FilmDetail> {
               ),
             ],
           ),
+
+          ///Separator
           const SizedBox(
             height: 10,
           ),
+
+          ///Premire Date
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -133,9 +150,13 @@ class _FilmDetailState extends State<FilmDetail> {
               ),
             ],
           ),
+
+          ///Separator
           const SizedBox(
             height: 10,
           ),
+
+          ///Description
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

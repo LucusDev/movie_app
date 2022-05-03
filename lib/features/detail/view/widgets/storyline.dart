@@ -17,24 +17,34 @@ class StoryLine extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          ///Title for storyline
           Text(
             "STORYLINE",
             style: TextStyle(
               color: Colors.white.withOpacity(0.4),
             ),
           ),
+
+          ///Separator
           const SizedBox(
             height: 15,
           ),
+
+          ///Storyline
           Text(
             storyline,
             style: TextStyle(
               color: Colors.white.withOpacity(0.85),
             ),
           ),
+
+          ///Separator
+
           const SizedBox(
             height: 15,
           ),
+
+          ///Button Row
           SingleChildScrollView(
             child: Row(
               children: [

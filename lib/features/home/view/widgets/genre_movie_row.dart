@@ -20,50 +20,16 @@ class GenreMovieRow extends StatefulWidget {
 }
 
 class _GenreMovieRowState extends State<GenreMovieRow> {
-  Optional<int> currentGenre = const Optional.notAvaliable();
-  bool isFirst = true;
   @override
   Widget build(BuildContext context) {
     final movieList = widget.list;
-    final genreList = widget.genres;
 
     return Column(
       children: [
-        Container(
-          color: Constant.primaryColorLight,
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                ...genreList.map((e) {
-                  return GenreTag(
-                    backgroundColor: Colors.transparent,
-                    onClick: () {
-                      final bloc =
-                          Provider.of<HomeBloc>(context, listen: false);
-                      bloc.onGenreClick(e.id ?? 0);
-                      setState(() {
-                        currentGenre = Optional.auto(e.id);
-                      });
-                    },
-                    text: e.name ?? "",
-                    isActive: currentGenre.map(avaliable: (value) {
-                      return value.value == (e.id ?? -99999);
-                    }, notAvaliable: (_) {
-                      if (isFirst) {
-                        currentGenre = Optional.auto(e.id);
-                        isFirst = false;
-                        return true;
-                      }
-                      return false;
-                    }),
-                  );
-                })
-              ],
-            ),
-          ),
-        ),
+        ///Genre Row
+        GenreRow(genreList: widget.genres),
+
+        ///Movie by Genre Row
         AspectRatio(
           aspectRatio: 3 / 2,
           child: movieList.isEmpty
@@ -82,6 +48,60 @@ class _GenreMovieRowState extends State<GenreMovieRow> {
                 ),
         ),
       ],
+    );
+  }
+}
+
+class GenreRow extends StatefulWidget {
+  final List<Genres> genreList;
+  const GenreRow({
+    Key? key,
+    required this.genreList,
+  }) : super(key: key);
+
+  @override
+  State<GenreRow> createState() => _GenreRowState();
+}
+
+class _GenreRowState extends State<GenreRow> {
+  Optional<int> currentGenre = const Optional.notAvaliable();
+  bool isFirst = true;
+  @override
+  Widget build(BuildContext context) {
+    final genreList = widget.genreList;
+    return Container(
+      color: Constant.primaryColorLight,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ...genreList.map((e) {
+              return GenreTag(
+                backgroundColor: Colors.transparent,
+                onClick: () {
+                  final bloc = Provider.of<HomeBloc>(context, listen: false);
+                  bloc.onGenreClick(e.id ?? 0);
+                  setState(() {
+                    currentGenre = Optional.auto(e.id);
+                  });
+                },
+                text: e.name ?? "",
+                isActive: currentGenre.map(avaliable: (value) {
+                  return value.value == (e.id ?? -99999);
+                }, notAvaliable: (_) {
+                  if (isFirst) {
+                    currentGenre = Optional.auto(e.id);
+                    isFirst = false;
+                    return true;
+                  }
+                  return false;
+                }),
+              );
+            })
+          ],
+        ),
+      ),
     );
   }
 }
