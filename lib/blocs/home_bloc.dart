@@ -27,25 +27,25 @@ class HomeBloc extends ChangeNotifier {
     mModel.getNowPlaying().then((result) {
       mNowPlayingMovieList = result;
       notifyListeners();
-    }).catchError(_onError);
+    }).onError(_onError);
 
     ///Get Popular Fetch
     mModel.getPopularMovies().then((result) {
       mPopularFilmList = result;
       notifyListeners();
-    }).catchError(_onError);
+    }).onError(_onError);
 
     ///Get ShowCases Fetch
     mModel.getShowCase().then((result) {
       mShowCaseList = result;
       notifyListeners();
-    }).catchError(_onError);
+    }).onError(_onError);
 
     ///GetBest Actors Fetch
     mModel.getBestActors().then((result) {
       mBestActorList = result;
       notifyListeners();
-    }).catchError(_onError);
+    }).onError(_onError);
 
     ///Get Genre Fetch
     mModel.getGenres().then((result) {
@@ -57,9 +57,9 @@ class HomeBloc extends ChangeNotifier {
         mModel.getMovieByGenre(mGenreList!.first.id ?? 0).then((result) {
           mMoviesByGenreList = result;
           notifyListeners();
-        }).catchError(_onError);
+        }).onError(_onError);
       }
-    }).catchError(_onError);
+    }).onError(_onError);
   }
 
   void cleanError() {
@@ -73,11 +73,11 @@ class HomeBloc extends ChangeNotifier {
     mModel.getMovieByGenre(id).then((result) {
       mMoviesByGenreList = result;
       notifyListeners();
-    }).catchError(_onError);
+    }).onError(_onError);
   }
 
   // ignore: prefer_void_to_null
-  FutureOr<Null> _onError(dynamic error) {
+  FutureOr<Null> _onError(dynamic error, dynamic _) {
     this.error = error.toString();
     notifyListeners();
   }

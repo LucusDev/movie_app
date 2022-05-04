@@ -13,7 +13,7 @@ class DetailBloc extends ChangeNotifier {
     mModel.getMovieDetail(id).then((result) {
       movieDetail = result;
       notifyListeners();
-    }).catchError(_onError);
+    }).onError(_onError);
   }
   void cleanError() {
     error = null;
@@ -21,7 +21,7 @@ class DetailBloc extends ChangeNotifier {
   }
 
   // ignore: prefer_void_to_null
-  FutureOr<Null> _onError(dynamic error) {
+  FutureOr<Null> _onError(dynamic error, dynamic _) {
     this.error = error.toString();
     notifyListeners();
   }
