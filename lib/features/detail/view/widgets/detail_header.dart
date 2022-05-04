@@ -2,10 +2,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:movie_app/core/constant.dart';
-import 'package:movie_app/core/models/movie.dart';
+import 'package:movie_app/data/vos/movie_vo.dart';
 
 class DetailHeader extends StatelessWidget {
-  final Movie movie;
+  final MovieVO movie;
   const DetailHeader({
     Key? key,
     required this.movie,
@@ -24,7 +24,7 @@ class DetailHeaderDelegate extends SliverPersistentHeaderDelegate {
   DetailHeaderDelegate({
     required this.movie,
   });
-  final Movie movie;
+  final MovieVO movie;
 
   @override
   Widget build(

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:movie_app/core/constant.dart';
-import 'package:movie_app/core/models/movie.dart';
+import 'package:movie_app/data/vos/movie_vo.dart';
 import 'package:movie_app/features/detail/view/widgets/genre_button.dart';
 
 class TimeGenreRow extends StatelessWidget {
-  final Movie movie;
+  final MovieVO movie;
   const TimeGenreRow({
     Key? key,
     required this.movie,
@@ -35,7 +35,7 @@ class TimeGenreRow extends StatelessWidget {
           ),
 
           ///Genre Row
-          ...movie.genres?.map((e) => GenreButton(text: e.name ?? "")) ?? [],
+          ...movie.genres.map((e) => GenreButton(text: e.name ?? "")) ,
           const SizedBox(
             width: 5,
           ),

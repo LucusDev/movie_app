@@ -1,13 +1,16 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:movie_app/data/vos/credits_vo.dart';
 import 'package:movie_app/data/vos/genre_vo.dart';
-import 'package:movie_app/data/vos/movie_detail_vo.dart';
+import 'package:movie_app/data/vos/movie_vo.dart';
 import 'package:movie_app/data/vos/production_countries_vo.dart';
-part 'movie_detail_response.g.dart';
+part 'movie_detail_vo.g.dart';
 
 @JsonSerializable()
-class MovieDetailResponse extends MovieDetailVO {
-  MovieDetailResponse({
+class MovieDetailVO extends MovieVO {
+  @JsonKey(name: "credits")
+  final CreditsVO credits;
+
+  MovieDetailVO({
     int? id,
     String? originalTitle,
     String? overview,
@@ -17,13 +20,12 @@ class MovieDetailResponse extends MovieDetailVO {
     int? runtime,
     String? title,
     List<ProductionCountriesVO>? productionCountries,
+    List<GenreVO> genres = const [],
     double? voteAverage,
     int? voteCount,
-    CreditsVO credits = const CreditsVO(),
-    List<GenreVO> genres = const [],
+    this.credits = const CreditsVO(),
   }) : super(
           genres: genres,
-          credits: credits,
           id: id,
           originalTitle: originalTitle,
           overview: overview,
@@ -37,8 +39,8 @@ class MovieDetailResponse extends MovieDetailVO {
           voteCount: voteCount,
         );
 
-  factory MovieDetailResponse.fromJson(Map<String, dynamic> json) =>
-      _$MovieDetailResponseFromJson(json);
+  factory MovieDetailVO.fromJson(Map<String, dynamic> json) =>
+      _$MovieDetailVOFromJson(json);
   @override
-  Map<String, dynamic> toJson() => _$MovieDetailResponseToJson(this);
+  Map<String, dynamic> toJson() => _$MovieDetailVOToJson(this);
 }

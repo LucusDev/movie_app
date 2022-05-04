@@ -1,93 +1,65 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:movie_app/core/models/movie.dart';
-import 'package:movie_app/core/models/people.dart';
-import 'package:movie_app/features/home/model/network/home_repo.dart';
+import 'package:movie_app/data/model/movie_app_model.dart';
+import 'package:movie_app/data/model/movie_app_model_impl.dart';
+import 'package:movie_app/data/vos/genre_vo.dart';
+import 'package:movie_app/data/vos/movie_vo.dart';
+import 'package:movie_app/data/vos/people_vo.dart';
 
 class HomeBloc extends ChangeNotifier {
   ///States
-  List<Movie>? mNowPlayingMovieList;
-  List<Movie>? mPopularFilmList;
-  List<Movie>? mShowCaseList;
-  List<People>? mBestActorList;
-  List<Genres>? mGenreList;
-  List<Movie>? mMoviesByGenreList;
+  List<MovieVO>? mNowPlayingMovieList;
+  List<MovieVO>? mPopularFilmList;
+  List<MovieVO>? mShowCaseList;
+  List<PeopleVO>? mBestActorList;
+  List<GenreVO>? mGenreList;
+  List<MovieVO>? mMoviesByGenreList;
 
   String? error;
-
+  MovieAppModel mModel = MovieAppModelImpl();
   HomeBloc() {
     fetch();
   }
   fetch() {
     ///Now Playing Fetch
-    HomeRepo.getNowPlaying().then((result) {
-      result.when(
-        success: (value) {
-          mNowPlayingMovieList = value;
-          notifyListeners();
-        },
-        error: (message) {
-          error = message;
-          notifyListeners();
-        },
-      );
-    });
+
+    mModel.getNowPlaying().then((result) {
+      mNowPlayingMovieList = result;
+      notifyListeners();
+    }).catchError(_onError);
 
     ///Get Popular Fetch
-    HomeRepo.getPopular().then((result) {
-      result.when(success: (value) {
-        mPopularFilmList = value;
-        notifyListeners();
-      }, error: (message) {
-        error = message;
-        notifyListeners();
-      });
-    });
+    mModel.getPopularMovies().then((result) {
+      mPopularFilmList = result;
+      notifyListeners();
+    }).catchError(_onError);
 
     ///Get ShowCases Fetch
-    HomeRepo.getShowcases().then((result) {
-      result.when(success: (value) {
-        mShowCaseList = value;
-        notifyListeners();
-      }, error: (message) {
-        error = message;
-        notifyListeners();
-      });
-    });
+    mModel.getShowCase().then((result) {
+      mShowCaseList = result;
+      notifyListeners();
+    }).catchError(_onError);
 
     ///GetBest Actors Fetch
-    HomeRepo.getBestActors().then((result) {
-      result.when(success: (value) {
-        mBestActorList = value;
-        notifyListeners();
-      }, error: (message) {
-        error = message;
-        notifyListeners();
-      });
-    });
+    mModel.getBestActors().then((result) {
+      mBestActorList = result;
+      notifyListeners();
+    }).catchError(_onError);
 
     ///Get Genre Fetch
-    HomeRepo.getGenres().then((result) {
-      result.when(success: (value) {
-        mGenreList = value;
-        notifyListeners();
-      }, error: (message) {
-        error = message;
-        notifyListeners();
-      });
+    mModel.getGenres().then((result) {
+      mGenreList = result;
+      notifyListeners();
 
       ///Get Movies by Genre Fetch
       if (mGenreList != null) {
-        HomeRepo.getGenreMovie(mGenreList!.first.id ?? 0).then((result) {
-          result.when(success: (value) {
-            mMoviesByGenreList = value;
-            notifyListeners();
-          }, error: (message) {
-            error = message;
-            notifyListeners();
-          });
-        });
+        mModel.getMovieByGenre(mGenreList!.first.id ?? 0).then((result) {
+          mMoviesByGenreList = result;
+          notifyListeners();
+        }).catchError(_onError);
       }
-    });
+    }).catchError(_onError);
   }
 
   void cleanError() {
@@ -98,15 +70,16 @@ class HomeBloc extends ChangeNotifier {
   void onGenreClick(int id) {
     mMoviesByGenreList = null;
     notifyListeners();
-    HomeRepo.getGenreMovie(id).then((result) {
-      result.when(success: (value) {
-        mMoviesByGenreList = value;
-        notifyListeners();
-      }, error: (message) {
-        error = message;
-        notifyListeners();
-      });
-    });
+    mModel.getMovieByGenre(id).then((result) {
+      mMoviesByGenreList = result;
+      notifyListeners();
+    }).catchError(_onError);
+  }
+
+  // ignore: prefer_void_to_null
+  FutureOr<Null> _onError(dynamic error) {
+    this.error = error.toString();
+    notifyListeners();
   }
 
   void refresh() {
@@ -121,16 +94,3 @@ class HomeBloc extends ChangeNotifier {
     fetch();
   }
 }
-
-// class DataAgentImpl {
-//   static DataAgentImpl? _singleton;
-//   DataAgentImpl._(){
-//     ///make dio object here
-//   }
-//   factory DataAgentImpl.get() {
-//     _singleton ??= DataAgentImpl._();
-//     return _singleton!;
-//   }
-// }
-
-// final a = DataAgentImpl.get();

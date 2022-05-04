@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:movie_app/core/models/movie.dart';
+import 'package:movie_app/data/vos/movie_vo.dart';
 
 import 'package:movie_app/features/home/view/widgets/movie_card.dart';
 
 class PopularMovieSectionView extends StatelessWidget {
-  final List<Movie> list;
+  final List<MovieVO> list;
   const PopularMovieSectionView({
     Key? key,
     required this.list,

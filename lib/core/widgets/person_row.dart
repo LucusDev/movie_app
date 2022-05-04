@@ -1,14 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_app/core/constant.dart';
-import 'package:movie_app/core/models/people.dart';
+import 'package:movie_app/data/vos/people_vo.dart';
 
 class PersonRow extends StatelessWidget {
   final bool isMore;
   final String type;
   final Color backgroundColor;
 
-  final List<People> peopleList;
+  final List<PeopleVO> peopleList;
   const PersonRow({
     Key? key,
     this.isMore = false,
@@ -81,7 +81,7 @@ class PersonRowItem extends StatelessWidget {
     required this.people,
   }) : super(key: key);
 
-  final People people;
+  final PeopleVO people;
 
   @override
   Widget build(BuildContext context) {

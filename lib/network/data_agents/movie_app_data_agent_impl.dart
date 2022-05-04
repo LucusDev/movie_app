@@ -1,20 +1,21 @@
 import 'package:dio/dio.dart';
 import 'package:movie_app/data/vos/genre_vo.dart';
+import 'package:movie_app/data/vos/movie_detail_vo.dart';
 import 'package:movie_app/data/vos/movie_vo.dart';
 import 'package:movie_app/data/vos/people_vo.dart';
 import 'package:movie_app/network/data_agents/movie_app_data_agent.dart';
 import 'package:movie_app/network/the_movie_api.dart';
 
 class MovieAppDataAgentImpl extends MovieAppDataAgent {
-  static final MovieAppDataAgentImpl singleton = MovieAppDataAgentImpl._();
+  static final MovieAppDataAgentImpl _singleton = MovieAppDataAgentImpl._();
   final TheMovieApi movieClient = TheMovieApi(Dio());
 
   MovieAppDataAgentImpl._();
 
-  factory MovieAppDataAgentImpl() => singleton;
+  factory MovieAppDataAgentImpl() => _singleton;
 
   @override
-  Future<List<MovieVO>> getNowPlaying() {
+  Future<List<MovieVO>> getNowPlaying() async {
     return movieClient
         .getNowPlaying()
         .asStream()
@@ -23,7 +24,7 @@ class MovieAppDataAgentImpl extends MovieAppDataAgent {
   }
 
   @override
-  Future<List<MovieVO>> getPopularMovies() {
+  Future<List<MovieVO>> getPopularMovies() async {
     return movieClient
         .getPopularMovies()
         .asStream()
@@ -32,7 +33,7 @@ class MovieAppDataAgentImpl extends MovieAppDataAgent {
   }
 
   @override
-  Future<List<PeopleVO>> getBestActors() {
+  Future<List<PeopleVO>> getBestActors() async {
     return movieClient
         .getBestActors()
         .asStream()
@@ -41,7 +42,7 @@ class MovieAppDataAgentImpl extends MovieAppDataAgent {
   }
 
   @override
-  Future<List<GenreVO>> getGenres() {
+  Future<List<GenreVO>> getGenres() async {
     return movieClient
         .getGenres()
         .asStream()
@@ -50,7 +51,7 @@ class MovieAppDataAgentImpl extends MovieAppDataAgent {
   }
 
   @override
-  Future<List<MovieVO>> getMovieByGenre(int id) {
+  Future<List<MovieVO>> getMovieByGenre(int id) async {
     return movieClient
         .getMovieByGenre(id.toString())
         .asStream()
@@ -59,7 +60,7 @@ class MovieAppDataAgentImpl extends MovieAppDataAgent {
   }
 
   @override
-  Future<List<MovieVO>> getShowCase() {
+  Future<List<MovieVO>> getShowCase() async {
     return movieClient
         .getShowCaseMovie()
         .asStream()
@@ -68,7 +69,7 @@ class MovieAppDataAgentImpl extends MovieAppDataAgent {
   }
 
   @override
-  Future<MovieVO> getMovieDetail(int id) {
+  Future<MovieDetailVO> getMovieDetail(int id) async {
     return movieClient.getMovieDetail(id);
   }
 }

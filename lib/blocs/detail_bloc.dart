@@ -1,27 +1,28 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:movie_app/features/detail/model/models/movie_detail.dart';
-import 'package:movie_app/features/detail/model/network/movie_repo.dart';
+import 'package:movie_app/data/model/movie_app_model.dart';
+import 'package:movie_app/data/model/movie_app_model_impl.dart';
+import 'package:movie_app/data/vos/movie_detail_vo.dart';
 
 class DetailBloc extends ChangeNotifier {
-  MovieDetail? movieDetail;
+  MovieDetailVO? movieDetail;
   String? error;
-
+  final MovieAppModel mModel = MovieAppModelImpl();
   DetailBloc(int id) {
-    MovieRepo.getMovieDetail(id: id).then((result) {
-      result.when(
-        success: (value) {
-          movieDetail = value;
-          notifyListeners();
-        },
-        error: (message) {
-          error = message;
-          notifyListeners();
-        },
-      );
-    });
+    mModel.getMovieDetail(id).then((result) {
+      movieDetail = result;
+      notifyListeners();
+    }).catchError(_onError);
   }
   void cleanError() {
     error = null;
+    notifyListeners();
+  }
+
+  // ignore: prefer_void_to_null
+  FutureOr<Null> _onError(dynamic error) {
+    this.error = error.toString();
     notifyListeners();
   }
 }

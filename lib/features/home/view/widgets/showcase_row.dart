@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_app/core/constant.dart';
-import 'package:movie_app/core/models/movie.dart';
+import 'package:movie_app/data/vos/movie_vo.dart';
 import 'package:movie_app/features/detail/view/detail_page.dart';
 import 'package:movie_app/features/home/view/widgets/play_button.dart';
 
@@ -9,7 +9,7 @@ class ShowCaseRow extends StatefulWidget {
   final bool isMore;
   final String type;
   final Color backgroundColor;
-  final List<Movie> list;
+  final List<MovieVO> list;
   const ShowCaseRow({
     Key? key,
     this.isMore = true,
@@ -96,7 +96,7 @@ class ShowCaseRowItem extends StatelessWidget {
     required this.item,
   }) : super(key: key);
 
-  final Movie item;
+  final MovieVO item;
 
   @override
   Widget build(BuildContext context) {

@@ -1,4 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:movie_app/core/models/movie.dart';
+import 'package:movie_app/data/vos/genre_vo.dart';
 import 'package:movie_app/data/vos/production_countries_vo.dart';
 part 'movie_vo.g.dart';
 
@@ -26,6 +28,8 @@ class MovieVO {
   double? voteAverage;
   @JsonKey(name: "vote_count")
   int? voteCount;
+  @JsonKey(name: "genres")
+  List<GenreVO> genres;
 
   MovieVO({
     this.id,
@@ -39,6 +43,7 @@ class MovieVO {
     this.productionCountries,
     this.voteAverage,
     this.voteCount,
+    this.genres = const [],
   });
 
   factory MovieVO.fromJson(Map<String, dynamic> json) =>

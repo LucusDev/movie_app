@@ -1,12 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_app/core/constant.dart';
-import 'package:movie_app/core/models/movie.dart';
+import 'package:movie_app/data/vos/movie_vo.dart';
 import 'package:movie_app/features/detail/view/detail_page.dart';
 import 'package:movie_app/features/detail/view/widgets/detail_header.dart';
 
 class MovieCard extends StatelessWidget {
-  final Movie movie;
+  final MovieVO movie;
   final bool isTop;
   const MovieCard({
     Key? key,
