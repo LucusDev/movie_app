@@ -3,10 +3,11 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:icofont_flutter/icofont_flutter.dart';
 import 'package:movie_app/blocs/home_bloc.dart';
 import 'package:movie_app/core/constant.dart';
-import 'package:movie_app/core/models/movie.dart';
-import 'package:movie_app/core/models/people.dart';
 import 'package:movie_app/core/widgets/dialog.dart' as dl;
 import 'package:movie_app/core/widgets/person_row.dart';
+import 'package:movie_app/data/vos/genre_vo.dart';
+import 'package:movie_app/data/vos/movie_vo.dart';
+import 'package:movie_app/data/vos/people_vo.dart';
 import 'package:movie_app/features/home/view/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -40,7 +41,7 @@ class _HomePageState extends State<HomePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       ///NowPlayingMovie Section
-                      Selector<HomeBloc, List<Movie>?>(
+                      Selector<HomeBloc, List<MovieVO>?>(
                           selector: (context, bloc) =>
                               bloc.mNowPlayingMovieList,
                           builder: (context, list, _) {
@@ -55,7 +56,7 @@ class _HomePageState extends State<HomePage> {
                           }),
 
                       ///Popular Section
-                      Selector<HomeBloc, List<Movie>?>(
+                      Selector<HomeBloc, List<MovieVO>?>(
                           selector: (context, bloc) => bloc.mPopularFilmList,
                           builder: (context, list, _) {
                             return list == null
@@ -72,7 +73,7 @@ class _HomePageState extends State<HomePage> {
                       const CheckMovieTime(),
 
                       ///Genre Section
-                      Selector<HomeBloc, List<Genres>?>(
+                      Selector<HomeBloc, List<GenreVO>?>(
                           selector: (context, bloc) => bloc.mGenreList,
                           builder: (context, genreList, _) {
                             return genreList == null
@@ -82,7 +83,7 @@ class _HomePageState extends State<HomePage> {
                                       child: CircularProgressIndicator(),
                                     ),
                                   )
-                                : Selector<HomeBloc, List<Movie>?>(
+                                : Selector<HomeBloc, List<MovieVO>?>(
                                     selector: (context, bloc) =>
                                         bloc.mMoviesByGenreList,
                                     builder: (context, movielist, _) {
@@ -94,7 +95,7 @@ class _HomePageState extends State<HomePage> {
                           }),
 
                       ///ShowCase Section
-                      Selector<HomeBloc, List<Movie>?>(
+                      Selector<HomeBloc, List<MovieVO>?>(
                           selector: (context, bloc) => bloc.mShowCaseList,
                           builder: (context, list, _) {
                             return list == null
@@ -111,7 +112,7 @@ class _HomePageState extends State<HomePage> {
                           }),
 
                       ///BestActors Section
-                      Selector<HomeBloc, List<People>?>(
+                      Selector<HomeBloc, List<PeopleVO>?>(
                           selector: (context, bloc) => bloc.mBestActorList,
                           builder: (context, list, _) {
                             return list == null

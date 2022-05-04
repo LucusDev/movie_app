@@ -1,19 +1,20 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'genre_result.dart';
+part of 'genre_response.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-GenreResult _$GenreResultFromJson(Map<String, dynamic> json) => GenreResult(
+GenreResponse _$GenreResponseFromJson(Map<String, dynamic> json) =>
+    GenreResponse(
       (json['genres'] as List<dynamic>?)
               ?.map((e) => GenreVO.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],
     );
 
-Map<String, dynamic> _$GenreResultToJson(GenreResult instance) =>
+Map<String, dynamic> _$GenreResponseToJson(GenreResponse instance) =>
     <String, dynamic>{
-      'genres': instance.results,
+      'genres': instance.genres,
     };

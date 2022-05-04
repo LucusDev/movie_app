@@ -1,18 +1,20 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:movie_app/core/models/movie.dart';
+import 'package:movie_app/data/vos/genre_vo.dart';
 import 'package:movie_app/data/vos/production_countries_vo.dart';
 part 'movie_vo.g.dart';
 
 @JsonSerializable()
 class MovieVO {
-  @JsonKey()
+  @JsonKey(name: "id")
   int? id;
-  @JsonKey()
+  @JsonKey(name: "title")
   String? title;
   @JsonKey(name: "original_title")
   String? originalTitle;
-  @JsonKey()
+  @JsonKey(name: "overview")
   String? overview;
-  @JsonKey()
+  @JsonKey(name: "popularity")
   double? popularity;
   @JsonKey(name: "poster_path")
   String? posterPath;
@@ -20,12 +22,14 @@ class MovieVO {
   String? releaseDate;
   @JsonKey(name: "production_companies", defaultValue: [])
   List<ProductionCountriesVO>? productionCountries;
-  @JsonKey()
+  @JsonKey(name: "runtime")
   int? runtime;
   @JsonKey(name: "vote_average")
   double? voteAverage;
   @JsonKey(name: "vote_count")
   int? voteCount;
+  @JsonKey(name: "genres")
+  List<GenreVO> genres;
 
   MovieVO({
     this.id,
@@ -39,6 +43,7 @@ class MovieVO {
     this.productionCountries,
     this.voteAverage,
     this.voteCount,
+    this.genres = const [],
   });
 
   factory MovieVO.fromJson(Map<String, dynamic> json) =>

@@ -1,12 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'movie_vo.dart';
+part of 'movie_detail_vo.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-MovieVO _$MovieVOFromJson(Map<String, dynamic> json) => MovieVO(
+MovieDetailVO _$MovieDetailVOFromJson(Map<String, dynamic> json) =>
+    MovieDetailVO(
       id: json['id'] as int?,
       originalTitle: json['original_title'] as String?,
       overview: json['overview'] as String?,
@@ -20,15 +21,19 @@ MovieVO _$MovieVOFromJson(Map<String, dynamic> json) => MovieVO(
                   ProductionCountriesVO.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],
-      voteAverage: (json['vote_average'] as num?)?.toDouble(),
-      voteCount: json['vote_count'] as int?,
       genres: (json['genres'] as List<dynamic>?)
               ?.map((e) => GenreVO.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
+      voteAverage: (json['vote_average'] as num?)?.toDouble(),
+      voteCount: json['vote_count'] as int?,
+      credits: json['credits'] == null
+          ? const CreditsVO()
+          : CreditsVO.fromJson(json['credits'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$MovieVOToJson(MovieVO instance) => <String, dynamic>{
+Map<String, dynamic> _$MovieDetailVOToJson(MovieDetailVO instance) =>
+    <String, dynamic>{
       'id': instance.id,
       'title': instance.title,
       'original_title': instance.originalTitle,
@@ -41,4 +46,5 @@ Map<String, dynamic> _$MovieVOToJson(MovieVO instance) => <String, dynamic>{
       'vote_average': instance.voteAverage,
       'vote_count': instance.voteCount,
       'genres': instance.genres,
+      'credits': instance.credits,
     };

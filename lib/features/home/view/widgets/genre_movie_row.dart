@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:helper/helper.dart';
 import 'package:movie_app/blocs/home_bloc.dart';
 import 'package:movie_app/core/constant.dart';
-import 'package:movie_app/core/models/movie.dart';
+import 'package:movie_app/data/vos/genre_vo.dart';
+import 'package:movie_app/data/vos/movie_vo.dart';
 import 'package:movie_app/features/home/view/widgets/movie_card.dart';
 import 'package:provider/provider.dart';
 
 class GenreMovieRow extends StatefulWidget {
-  final List<Movie> list;
-  final List<Genres> genres;
+  final List<MovieVO> list;
+  final List<GenreVO> genres;
   const GenreMovieRow({
     Key? key,
     required this.list,
@@ -53,7 +54,7 @@ class _GenreMovieRowState extends State<GenreMovieRow> {
 }
 
 class GenreRow extends StatefulWidget {
-  final List<Genres> genreList;
+  final List<GenreVO> genreList;
   const GenreRow({
     Key? key,
     required this.genreList,

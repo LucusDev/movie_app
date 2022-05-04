@@ -3,10 +3,10 @@ part 'people_vo.g.dart';
 
 @JsonSerializable()
 class PeopleVO {
-  @JsonKey()
+  @JsonKey(name: "id")
   int? id;
 
-  @JsonKey()
+  @JsonKey(name: "name")
   String? name;
 
   @JsonKey(name: "profile_path")

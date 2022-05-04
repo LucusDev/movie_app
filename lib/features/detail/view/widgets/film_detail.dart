@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:movie_app/core/constant.dart';
-import 'package:movie_app/core/models/movie.dart';
+import 'package:movie_app/data/vos/movie_vo.dart';
 
 class FilmDetail extends StatefulWidget {
-  final Movie movie;
+  final MovieVO movie;
 
   const FilmDetail({
     Key? key,
@@ -83,10 +83,9 @@ class _FilmDetailState extends State<FilmDetail> {
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.7,
                 child: Text(
-                  movie.genres?.map((e) => e.name).join(
-                            " , ",
-                          ) ??
-                      "",
+                  movie.genres.map((e) => e.name).join(
+                        " , ",
+                      ),
                 ),
               ),
             ],

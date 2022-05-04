@@ -1,23 +1,21 @@
 import 'package:dio/dio.dart';
 import 'package:movie_app/data/vos/genre_vo.dart';
+import 'package:movie_app/data/vos/movie_detail_vo.dart';
 import 'package:movie_app/data/vos/movie_vo.dart';
 import 'package:movie_app/data/vos/people_vo.dart';
-import 'package:movie_app/network/data_agents/retrofit_agent.dart';
-import 'package:movie_app/network/network_client.dart';
+import 'package:movie_app/network/data_agents/movie_app_data_agent.dart';
+import 'package:movie_app/network/the_movie_api.dart';
 
-class RetrofitAgentImpl extends RetrofitAgent {
-  static RetrofitAgentImpl? singleton;
-  final RestClient movieClient = RestClient(Dio());
+class MovieAppDataAgentImpl extends MovieAppDataAgent {
+  static final MovieAppDataAgentImpl _singleton = MovieAppDataAgentImpl._();
+  final TheMovieApi movieClient = TheMovieApi(Dio());
 
-  RetrofitAgentImpl._();
+  MovieAppDataAgentImpl._();
 
-  factory RetrofitAgentImpl() {
-    singleton ??= RetrofitAgentImpl._();
-    return singleton!;
-  }
+  factory MovieAppDataAgentImpl() => _singleton;
 
   @override
-  Future<List<MovieVO>> getNowPlaying() {
+  Future<List<MovieVO>> getNowPlaying() async {
     return movieClient
         .getNowPlaying()
         .asStream()
@@ -26,7 +24,7 @@ class RetrofitAgentImpl extends RetrofitAgent {
   }
 
   @override
-  Future<List<MovieVO>> getPopularMovies() {
+  Future<List<MovieVO>> getPopularMovies() async {
     return movieClient
         .getPopularMovies()
         .asStream()
@@ -35,7 +33,7 @@ class RetrofitAgentImpl extends RetrofitAgent {
   }
 
   @override
-  Future<List<PeopleVO>> getBestActors() {
+  Future<List<PeopleVO>> getBestActors() async {
     return movieClient
         .getBestActors()
         .asStream()
@@ -44,16 +42,16 @@ class RetrofitAgentImpl extends RetrofitAgent {
   }
 
   @override
-  Future<List<GenreVO>> getGenres() {
+  Future<List<GenreVO>> getGenres() async {
     return movieClient
         .getGenres()
         .asStream()
-        .map((event) => event.results)
+        .map((event) => event.genres)
         .first;
   }
 
   @override
-  Future<List<MovieVO>> getMovieByGenre(int id) {
+  Future<List<MovieVO>> getMovieByGenre(int id) async {
     return movieClient
         .getMovieByGenre(id.toString())
         .asStream()
@@ -62,7 +60,7 @@ class RetrofitAgentImpl extends RetrofitAgent {
   }
 
   @override
-  Future<List<MovieVO>> getShowCase() {
+  Future<List<MovieVO>> getShowCase() async {
     return movieClient
         .getShowCaseMovie()
         .asStream()
@@ -71,7 +69,7 @@ class RetrofitAgentImpl extends RetrofitAgent {
   }
 
   @override
-  Future<MovieVO> getMovieDetail(int id) {
+  Future<MovieDetailVO> getMovieDetail(int id) async {
     return movieClient.getMovieDetail(id);
   }
 }

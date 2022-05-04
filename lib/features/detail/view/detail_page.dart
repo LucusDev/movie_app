@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:movie_app/blocs/detail_bloc.dart';
 import 'package:movie_app/core/widgets/dialog.dart' as dl;
 import 'package:movie_app/core/widgets/person_row.dart';
+import 'package:movie_app/data/vos/movie_detail_vo.dart';
 import 'package:movie_app/features/detail/view/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -17,7 +18,7 @@ class DetailPage extends StatelessWidget {
     return ChangeNotifierProvider(
         create: (context) => DetailBloc(id),
         builder: (context, child) {
-          return Selector<DetailBloc, MovieDetail?>(
+          return Selector<DetailBloc, MovieDetailVO?>(
               selector: (context, bloc) => bloc.movieDetail,
               builder: (context, movieDetail, _) {
                 return Selector<DetailBloc, String?>(
@@ -34,37 +35,37 @@ class DetailPage extends StatelessWidget {
                                     child: CustomScrollView(
                                       slivers: [
                                         ///Detail Header
-                                        DetailHeader(movie: movieDetail.movie),
+                                        DetailHeader(movie: movieDetail),
 
                                         ///Convert Widgets to Sliver
                                         SliverList(
                                           delegate: SliverChildListDelegate(
                                             [
                                               ///Genre and Total Duration Section
-                                              TimeGenreRow(
-                                                  movie: movieDetail.movie),
+                                              TimeGenreRow(movie: movieDetail),
 
                                               ///StoryLine Section View
                                               StoryLine(
-                                                  storyline: movieDetail
-                                                          .movie.overview ??
-                                                      ""),
+                                                  storyline:
+                                                      movieDetail.overview ??
+                                                          ""),
 
                                               ///Actors Section
                                               PersonRow(
                                                 type: "ACTORS",
-                                                peopleList: movieDetail.cast,
+                                                peopleList:
+                                                    movieDetail.credits.cast,
                                               ),
 
                                               ///Film Detail Section
-                                              FilmDetail(
-                                                  movie: movieDetail.movie),
+                                              FilmDetail(movie: movieDetail),
 
                                               ///Creators Section
                                               PersonRow(
                                                 isMore: true,
                                                 type: "CREATORS",
-                                                peopleList: movieDetail.crew,
+                                                peopleList:
+                                                    movieDetail.credits.crew,
                                               ),
                                             ],
                                           ),

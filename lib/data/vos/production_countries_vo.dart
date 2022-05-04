@@ -3,9 +3,9 @@ part 'production_countries_vo.g.dart';
 
 @JsonSerializable()
 class ProductionCountriesVO {
-  @JsonKey()
+  @JsonKey(name: "iso31661")
   String? iso31661;
-  @JsonKey()
+  @JsonKey(name: "name")
   String? name;
 
   ProductionCountriesVO({this.iso31661, this.name});
