@@ -4,15 +4,15 @@ part 'movie_vo.g.dart';
 
 @JsonSerializable()
 class MovieVO {
-  @JsonKey()
+  @JsonKey(name: "id")
   int? id;
-  @JsonKey()
+  @JsonKey(name: "title")
   String? title;
   @JsonKey(name: "original_title")
   String? originalTitle;
-  @JsonKey()
+  @JsonKey(name: "overview")
   String? overview;
-  @JsonKey()
+  @JsonKey(name: "popularity")
   double? popularity;
   @JsonKey(name: "poster_path")
   String? posterPath;
@@ -20,7 +20,7 @@ class MovieVO {
   String? releaseDate;
   @JsonKey(name: "production_companies", defaultValue: [])
   List<ProductionCountriesVO>? productionCountries;
-  @JsonKey()
+  @JsonKey(name: "runtime")
   int? runtime;
   @JsonKey(name: "vote_average")
   double? voteAverage;

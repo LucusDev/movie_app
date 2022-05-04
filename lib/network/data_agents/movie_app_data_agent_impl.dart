@@ -2,19 +2,16 @@ import 'package:dio/dio.dart';
 import 'package:movie_app/data/vos/genre_vo.dart';
 import 'package:movie_app/data/vos/movie_vo.dart';
 import 'package:movie_app/data/vos/people_vo.dart';
-import 'package:movie_app/network/data_agents/retrofit_agent.dart';
+import 'package:movie_app/network/data_agents/movie_app_data_agent.dart';
 import 'package:movie_app/network/the_movie_api.dart';
 
-class RetrofitAgentImpl extends RetrofitAgent {
-  static RetrofitAgentImpl? singleton;
+class MovieAppDataAgentImpl extends MovieAppDataAgent {
+  static final MovieAppDataAgentImpl singleton = MovieAppDataAgentImpl._();
   final TheMovieApi movieClient = TheMovieApi(Dio());
 
-  RetrofitAgentImpl._();
+  MovieAppDataAgentImpl._();
 
-  factory RetrofitAgentImpl() {
-    singleton ??= RetrofitAgentImpl._();
-    return singleton!;
-  }
+  factory MovieAppDataAgentImpl() => singleton;
 
   @override
   Future<List<MovieVO>> getNowPlaying() {
@@ -48,7 +45,7 @@ class RetrofitAgentImpl extends RetrofitAgent {
     return movieClient
         .getGenres()
         .asStream()
-        .map((event) => event.results)
+        .map((event) => event.genres)
         .first;
   }
 

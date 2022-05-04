@@ -1,11 +1,11 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:movie_app/data/vos/movie_vo.dart';
 import 'package:movie_app/data/vos/production_countries_vo.dart';
-part 'movie_detail_result.g.dart';
+part 'movie_detail_response.g.dart';
 
 @JsonSerializable()
-class MovieDetailResult extends MovieVO {
-  MovieDetailResult({
+class MovieDetailResponse extends MovieVO {
+  MovieDetailResponse({
     int? id,
     String? originalTitle,
     String? overview,
@@ -31,8 +31,8 @@ class MovieDetailResult extends MovieVO {
           voteCount: voteCount,
         );
 
-  factory MovieDetailResult.fromJson(Map<String, dynamic> json) =>
-      _$MovieDetailResultFromJson(json);
+  factory MovieDetailResponse.fromJson(Map<String, dynamic> json) =>
+      _$MovieDetailResponseFromJson(json);
   @override
-  Map<String, dynamic> toJson() => _$MovieDetailResultToJson(this);
+  Map<String, dynamic> toJson() => _$MovieDetailResponseToJson(this);
 }

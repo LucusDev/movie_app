@@ -3,9 +3,9 @@ part 'genre_vo.g.dart';
 
 @JsonSerializable()
 class GenreVO {
-  @JsonKey()
+  @JsonKey(name: "id")
   int? id;
-  @JsonKey()
+  @JsonKey(name: "name")
   String? name;
 
   GenreVO({this.id, this.name});

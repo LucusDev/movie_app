@@ -1,20 +1,22 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'now_playing_result.dart';
+part of 'movie_by_genre_response.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-NowPlayingResult _$NowPlayingResultFromJson(Map<String, dynamic> json) =>
-    NowPlayingResult(
+MovieByGenreResponse _$MovieByGenreResponseFromJson(
+        Map<String, dynamic> json) =>
+    MovieByGenreResponse(
       (json['results'] as List<dynamic>?)
               ?.map((e) => MovieVO.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],
     );
 
-Map<String, dynamic> _$NowPlayingResultToJson(NowPlayingResult instance) =>
+Map<String, dynamic> _$MovieByGenreResponseToJson(
+        MovieByGenreResponse instance) =>
     <String, dynamic>{
       'results': instance.results,
     };

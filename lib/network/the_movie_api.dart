@@ -1,41 +1,41 @@
 import 'package:dio/dio.dart';
 import 'package:movie_app/network/api_constants.dart';
-import 'package:movie_app/network/response/best_actors_result.dart';
-import 'package:movie_app/network/response/genre_result.dart';
-import 'package:movie_app/network/response/movie_by_genre_result.dart';
-import 'package:movie_app/network/response/movie_detail_result.dart';
-import 'package:movie_app/network/response/now_playing_result.dart';
-import 'package:movie_app/network/response/popular_movie_result.dart';
-import 'package:movie_app/network/response/show_case_result.dart';
+import 'package:movie_app/network/response/best_actors_response.dart';
+import 'package:movie_app/network/response/genre_response.dart';
+import 'package:movie_app/network/response/movie_by_genre_response.dart';
+import 'package:movie_app/network/response/movie_detail_response.dart';
+import 'package:movie_app/network/response/now_playing_response.dart';
+import 'package:movie_app/network/response/popular_movie_response.dart';
+import 'package:movie_app/network/response/show_case_response.dart';
 import 'package:retrofit/retrofit.dart';
 
 part 'the_movie_api.g.dart';
 
 @RestApi(
-  baseUrl: baseUrl,
+  baseUrl: kBaseUrl,
 )
 abstract class TheMovieApi {
   factory TheMovieApi(Dio dio, {String baseUrl}) = _TheMovieApi;
 
-  @GET(getNowPlayingEndpoint)
-  Future<NowPlayingResult> getNowPlaying();
+  @GET(kNowPlayingEndpoint)
+  Future<NowPlayingResponse> getNowPlaying();
 
-  @GET(popularMovieEndpoint)
-  Future<PopularMovieResult> getPopularMovies();
+  @GET(kPopularMovieEndpoint)
+  Future<PopularMovieResponse> getPopularMovies();
 
-  @GET(showCaseMovieEndpoint)
-  Future<ShowCaseResult> getShowCaseMovie();
+  @GET(kShowCaseMovieEndpoint)
+  Future<ShowCaseResponse> getShowCaseMovie();
 
-  @GET(bestActorsEndpoint)
-  Future<BestActorsResult> getBestActors();
+  @GET(kBestActorsEndpoint)
+  Future<BestActorsResponse> getBestActors();
 
-  @GET(genreEndpoint)
-  Future<GenreResult> getGenres();
+  @GET(kGenreEndpoint)
+  Future<GenreResponse> getGenres();
 
-  @GET(movieByGenreEndpoint)
-  Future<MovieByGenreResult> getMovieByGenre(
-      @Query("with_genres") String genreId);
+  @GET(kMovieByGenreEndpoint)
+  Future<MovieByGenreResponse> getMovieByGenre(
+      @Query(kWithGenreParameter) String genreId);
 
-  @GET(movieDetailEndpoint)
-  Future<MovieDetailResult> getMovieDetail(@Path() int id);
+  @GET(kMovieDetailEndpoint)
+  Future<MovieDetailResponse> getMovieDetail(@Path() int id);
 }
