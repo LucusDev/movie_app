@@ -30,6 +30,7 @@ MovieDetailResponse _$MovieDetailResponseFromJson(Map<String, dynamic> json) =>
               ?.map((e) => GenreVO.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
+      type: $enumDecodeNullable(_$MovieTypeEnumMap, json['type']),
     );
 
 Map<String, dynamic> _$MovieDetailResponseToJson(
@@ -47,5 +48,12 @@ Map<String, dynamic> _$MovieDetailResponseToJson(
       'vote_average': instance.voteAverage,
       'vote_count': instance.voteCount,
       'genres': instance.genres,
+      'type': _$MovieTypeEnumMap[instance.type],
       'credits': instance.credits,
     };
+
+const _$MovieTypeEnumMap = {
+  MovieType.nowPlaying: 'nowPlaying',
+  MovieType.popular: 'popular',
+  MovieType.showcase: 'showcase',
+};

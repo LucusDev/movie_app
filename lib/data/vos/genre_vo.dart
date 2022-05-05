@@ -1,10 +1,16 @@
+import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:movie_app/persistent/hive_constants.dart';
 part 'genre_vo.g.dart';
 
+@HiveType(typeId: kGenreVOTypeId, adapterName: kGenreVOAdapterName)
 @JsonSerializable()
 class GenreVO {
+  @HiveField(1)
   @JsonKey(name: "id")
   int? id;
+
+  @HiveField(2)
   @JsonKey(name: "name")
   String? name;
 

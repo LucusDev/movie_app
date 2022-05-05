@@ -2,8 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_app/core/constant.dart';
 import 'package:movie_app/data/vos/movie_vo.dart';
-import 'package:movie_app/features/detail/view/detail_page.dart';
 import 'package:movie_app/features/detail/view/widgets/detail_header.dart';
+import 'package:movie_app/features/navigate.dart';
 
 class MovieCard extends StatelessWidget {
   final MovieVO movie;
@@ -18,13 +18,7 @@ class MovieCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) {
-            return DetailPage(
-              id: movie.id ?? 0,
-            );
-          },
-        ));
+        navigateToMovieDetail(context, movie.id ?? 0);
       },
       child: AspectRatio(
         aspectRatio: 10 / 16,

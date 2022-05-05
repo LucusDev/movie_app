@@ -3,6 +3,7 @@ import 'package:movie_app/data/vos/credits_vo.dart';
 import 'package:movie_app/data/vos/genre_vo.dart';
 import 'package:movie_app/data/vos/movie_detail_vo.dart';
 import 'package:movie_app/data/vos/production_countries_vo.dart';
+import 'package:movie_app/persistent/movie_type_enum.dart';
 part 'movie_detail_response.g.dart';
 
 @JsonSerializable()
@@ -21,7 +22,9 @@ class MovieDetailResponse extends MovieDetailVO {
     int? voteCount,
     CreditsVO credits = const CreditsVO(),
     List<GenreVO> genres = const [],
+    MovieType? type,
   }) : super(
+          type: type,
           genres: genres,
           credits: credits,
           id: id,

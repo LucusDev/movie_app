@@ -27,6 +27,7 @@ MovieDetailVO _$MovieDetailVOFromJson(Map<String, dynamic> json) =>
           const [],
       voteAverage: (json['vote_average'] as num?)?.toDouble(),
       voteCount: json['vote_count'] as int?,
+      type: $enumDecodeNullable(_$MovieTypeEnumMap, json['type']),
       credits: json['credits'] == null
           ? const CreditsVO()
           : CreditsVO.fromJson(json['credits'] as Map<String, dynamic>),
@@ -46,5 +47,12 @@ Map<String, dynamic> _$MovieDetailVOToJson(MovieDetailVO instance) =>
       'vote_average': instance.voteAverage,
       'vote_count': instance.voteCount,
       'genres': instance.genres,
+      'type': _$MovieTypeEnumMap[instance.type],
       'credits': instance.credits,
     };
+
+const _$MovieTypeEnumMap = {
+  MovieType.nowPlaying: 'nowPlaying',
+  MovieType.popular: 'popular',
+  MovieType.showcase: 'showcase',
+};

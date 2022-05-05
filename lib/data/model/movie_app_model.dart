@@ -5,11 +5,17 @@ import 'package:movie_app/data/vos/people_vo.dart';
 
 abstract class MovieAppModel {
   ///Network
-  Future<List<MovieVO>> getNowPlaying();
-  Future<List<MovieVO>> getPopularMovies();
-  Future<List<PeopleVO>> getBestActors();
+  void getNowPlaying();
+  void getPopularMovies();
+  void getShowCase();
+
   Future<List<GenreVO>> getGenres();
+  Future<List<PeopleVO>> getBestActors();
   Future<List<MovieVO>> getMovieByGenre(int id);
-  Future<List<MovieVO>> getShowCase();
   Future<MovieDetailVO> getMovieDetail(int id);
+
+  //Reactive
+  Stream<List<MovieVO>> getNowPlayingMoviesFromDatabase();
+  Stream<List<MovieVO>> getPopularMoviesFromDatabase();
+  Stream<List<MovieVO>> getShowCaseMoviesFromDatabase();
 }

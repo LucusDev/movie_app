@@ -3,6 +3,7 @@ import 'package:movie_app/data/vos/credits_vo.dart';
 import 'package:movie_app/data/vos/genre_vo.dart';
 import 'package:movie_app/data/vos/movie_vo.dart';
 import 'package:movie_app/data/vos/production_countries_vo.dart';
+import 'package:movie_app/persistent/movie_type_enum.dart';
 part 'movie_detail_vo.g.dart';
 
 @JsonSerializable()
@@ -23,8 +24,10 @@ class MovieDetailVO extends MovieVO {
     List<GenreVO> genres = const [],
     double? voteAverage,
     int? voteCount,
+    MovieType? type,
     this.credits = const CreditsVO(),
   }) : super(
+          type: type,
           genres: genres,
           id: id,
           originalTitle: originalTitle,

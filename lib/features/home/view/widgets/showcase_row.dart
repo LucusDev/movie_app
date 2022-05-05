@@ -2,8 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_app/core/constant.dart';
 import 'package:movie_app/data/vos/movie_vo.dart';
-import 'package:movie_app/features/detail/view/detail_page.dart';
 import 'package:movie_app/features/home/view/widgets/play_button.dart';
+import 'package:movie_app/features/navigate.dart';
 
 class ShowCaseRow extends StatefulWidget {
   final bool isMore;
@@ -102,13 +102,7 @@ class ShowCaseRowItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) {
-            return DetailPage(
-              id: item.id ?? 0,
-            );
-          },
-        ));
+        navigateToMovieDetail(context, item.id ?? 0);
       },
       child: Padding(
         padding: const EdgeInsets.only(right: 20.0),

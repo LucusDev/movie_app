@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_app/blocs/detail_bloc.dart';
+import 'package:movie_app/core/constant.dart';
 import 'package:movie_app/core/widgets/dialog.dart' as dl;
 import 'package:movie_app/core/widgets/person_row.dart';
 import 'package:movie_app/data/vos/movie_detail_vo.dart';
@@ -27,8 +28,22 @@ class DetailPage extends StatelessWidget {
                       return Stack(
                         children: [
                           movieDetail == null
-                              ? const Center(
-                                  child: CircularProgressIndicator(),
+                              ? Scaffold(
+                                  // backgroundColor: movieDetail == null
+                                  //     ? Constant.primaryColor.withOpacity(0.3)
+                                  //     : Theme.of(context)
+                                  //         .scaffoldBackgroundColor,
+                                  body: Center(
+                                      child: Container(
+                                    padding: const EdgeInsets.all(20),
+                                    decoration: BoxDecoration(
+                                      color: Constant.primaryColorLight,
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    child: const CircularProgressIndicator(
+                                      color: Constant.secondColorDark,
+                                    ),
+                                  )),
                                 )
                               : Scaffold(
                                   body: SafeArea(

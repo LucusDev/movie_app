@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_app/data/model/movie_app_model.dart';
 import 'package:movie_app/data/model/movie_app_model_impl.dart';
@@ -17,44 +18,45 @@ class HomeBloc extends ChangeNotifier {
   List<MovieVO>? mMoviesByGenreList;
 
   String? error;
-  MovieAppModel mModel = MovieAppModelImpl();
+
+  final MovieAppModel _mModel = MovieAppModelImpl();
+
   HomeBloc() {
     fetch();
   }
   fetch() {
     ///Now Playing Fetch
-
-    mModel.getNowPlaying().then((result) {
-      mNowPlayingMovieList = result;
+    _mModel.getNowPlayingMoviesFromDatabase().listen((value) {
+      mNowPlayingMovieList = value;
       notifyListeners();
     }).onError(_onError);
 
     ///Get Popular Fetch
-    mModel.getPopularMovies().then((result) {
+    _mModel.getPopularMoviesFromDatabase().listen((result) {
       mPopularFilmList = result;
       notifyListeners();
     }).onError(_onError);
 
     ///Get ShowCases Fetch
-    mModel.getShowCase().then((result) {
+    _mModel.getShowCaseMoviesFromDatabase().listen((result) {
       mShowCaseList = result;
       notifyListeners();
     }).onError(_onError);
 
     ///GetBest Actors Fetch
-    mModel.getBestActors().then((result) {
+    _mModel.getBestActors().then((result) {
       mBestActorList = result;
       notifyListeners();
     }).onError(_onError);
 
     ///Get Genre Fetch
-    mModel.getGenres().then((result) {
+    _mModel.getGenres().then((result) {
       mGenreList = result;
       notifyListeners();
 
       ///Get Movies by Genre Fetch
       if (mGenreList != null) {
-        mModel.getMovieByGenre(mGenreList!.first.id ?? 0).then((result) {
+        _mModel.getMovieByGenre(mGenreList!.first.id ?? 0).then((result) {
           mMoviesByGenreList = result;
           notifyListeners();
         }).onError(_onError);
@@ -70,15 +72,30 @@ class HomeBloc extends ChangeNotifier {
   void onGenreClick(int id) {
     mMoviesByGenreList = null;
     notifyListeners();
-    mModel.getMovieByGenre(id).then((result) {
+    _mModel.getMovieByGenre(id).then((result) {
       mMoviesByGenreList = result;
       notifyListeners();
     }).onError(_onError);
   }
 
   // ignore: prefer_void_to_null
-  FutureOr<Null> _onError(dynamic error, dynamic _) {
-    this.error = error.toString();
+  FutureOr<Null> _onError(Object error, dynamic _) {
+    //Dont overrite error if already exists
+    if (this.error != null) {
+      return null;
+    }
+    //Handle different Error based on types
+    switch (error.runtimeType) {
+      case DioError:
+        {
+          this.error = (error as DioError).message;
+          break;
+        }
+      default:
+        {
+          this.error = error.toString();
+        }
+    }
     notifyListeners();
   }
 
