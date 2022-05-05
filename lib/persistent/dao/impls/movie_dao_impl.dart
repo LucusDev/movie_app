@@ -4,11 +4,6 @@ import 'package:movie_app/persistent/movie_type_enum.dart';
 
 class MovieDaoImpl extends MovieDao {
   @override
-  List<MovieVO> getAllMovie() {
-    return getBox().values.toList();
-  }
-
-  @override
   void saveAllMovie(List<MovieVO> movies) {
     getBox().putAll(
       movies.asMap().map((key, value) => MapEntry(value.id, value)),
@@ -40,10 +35,7 @@ class MovieDaoImpl extends MovieDao {
 
   @override
   Stream<List<MovieVO>> getNowPlayingMovieStream() {
-    return Stream.value(getBox()
-        .values
-        .where((element) => element.type == MovieType.nowPlaying)
-        .toList());
+    return Stream.value(getNowPlayingMovie());
   }
 
   @override
@@ -56,10 +48,7 @@ class MovieDaoImpl extends MovieDao {
 
   @override
   Stream<List<MovieVO>> getPopularMovieStream() {
-    return Stream.value(getBox()
-        .values
-        .where((element) => element.type == MovieType.popular)
-        .toList());
+    return Stream.value(getPopularMovie());
   }
 
   @override
@@ -72,9 +61,11 @@ class MovieDaoImpl extends MovieDao {
 
   @override
   Stream<List<MovieVO>> getShowCaseMovieStream() {
-    return Stream.value(getBox()
-        .values
-        .where((element) => element.type == MovieType.showcase)
-        .toList());
+    return Stream.value(getShowCaseMovie());
+  }
+
+  @override
+  Future<List<MovieVO>> getAllMovie() async {
+    return getBox().values.toList();
   }
 }

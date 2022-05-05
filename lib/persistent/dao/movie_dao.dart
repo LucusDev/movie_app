@@ -7,7 +7,7 @@ abstract class MovieDao extends Dao<MovieVO> {
 //CRUD
   void saveAllMovie(List<MovieVO> movies);
 
-  List<MovieVO> getAllMovie();
+  Future<List<MovieVO>> getAllMovie();
 
   void saveMovie(MovieVO movie);
 
