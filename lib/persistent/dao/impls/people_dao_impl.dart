@@ -3,7 +3,7 @@ import 'package:movie_app/persistent/dao/people_dao.dart';
 
 class PeopleDaoImpl extends PeopleDao {
   @override
-  List<PeopleVO> getAllPeople() {
+  Future<List<PeopleVO>> getAllPeople() async{
     return getBox().values.toList();
   }
 

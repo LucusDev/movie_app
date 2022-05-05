@@ -7,5 +7,5 @@ abstract class GenreDao extends Dao<GenreVO> {
 
   void saveAllGenres(List<GenreVO> genres);
 
-  List<GenreVO> getGenres();
+  Future<List<GenreVO>> getGenres();
 }

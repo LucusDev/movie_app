@@ -3,7 +3,7 @@ import 'package:movie_app/persistent/dao/genre_dao.dart';
 
 class GenreDaoImpl extends GenreDao {
   @override
-  List<GenreVO> getGenres() {
+  Future<List<GenreVO>> getGenres() async {
     return getBox().values.toList();
   }
 

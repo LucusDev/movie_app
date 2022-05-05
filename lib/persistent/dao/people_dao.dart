@@ -7,5 +7,5 @@ abstract class PeopleDao extends Dao<PeopleVO> {
 
   void saveAllPeople(List<PeopleVO> people);
 
-  List<PeopleVO> getAllPeople();
+  Future<List<PeopleVO>> getAllPeople();
 }
