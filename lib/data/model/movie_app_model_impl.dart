@@ -27,18 +27,18 @@ class MovieAppModelImpl extends MovieAppModel {
 
   @override
   Future<List<PeopleVO>> getBestActors() {
-    _mAgent.getBestActors().then((value) {
+    return _mAgent.getBestActors().then((value) {
       _peopleDao.saveAllPeople(value);
+      return value;
     });
-    return _peopleDao.getAllPeople();
   }
 
   @override
   Future<List<GenreVO>> getGenres() {
-    _mAgent.getGenres().then((value) {
+    return _mAgent.getGenres().then((value) {
       _genreDao.saveAllGenres(value);
+      return value;
     });
-    return _genreDao.getGenres();
   }
 
   @override
@@ -52,7 +52,8 @@ class MovieAppModelImpl extends MovieAppModel {
   @override
   Future<MovieDetailVO> getMovieDetail(int id) {
     return _mAgent.getMovieDetail(id).then((value) {
-      // _movieDao.saveMovie(value);
+      value.type = _movieDao.getMovie(value.id ?? -1).type;
+      _movieDao.saveMovie(value);
       return value;
     });
   }

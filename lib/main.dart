@@ -11,13 +11,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:movie_app/persistent/hive_constants.dart';
 import 'package:movie_app/persistent/movie_type_enum.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown,
-  ]);
-
+Future<void> hiveInit() async {
   await Hive.initFlutter();
   Hive.registerAdapter(CreditVOAdapter());
   Hive.registerAdapter(GenreVOAdapter());
@@ -29,7 +23,16 @@ void main() async {
   await Hive.openBox<MovieVO>(kMovieVOBoxName);
   await Hive.openBox<PeopleVO>(kPeopleVOBoxName);
   await Hive.openBox<GenreVO>(kGenreVOBoxName);
+}
 
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+
+  await hiveInit();
   runApp(const MyApp());
 }
 
