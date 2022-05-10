@@ -30,6 +30,10 @@ jobs:
         run: bundle install --local
       - name: Setup Fastlane2
         run: bundle update --local
+
+      - name: go into android
+        run: cd android
+
       - name: Run Tests With Fastlane
         env:
           API: ${{matrix.api-level}}
