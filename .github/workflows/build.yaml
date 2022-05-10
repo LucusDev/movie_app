@@ -27,7 +27,9 @@ jobs:
           java-version: "8"
           distribution: "adopt"
       - name: Setup Fastlane
-        run: bundle install & bundle update --local
+        run: bundle install --local
+      - name: Setup Fastlane2
+        run: bundle update --local
       - name: Run Tests With Fastlane
         env:
           LC_ALL: en_US.UTF-8
