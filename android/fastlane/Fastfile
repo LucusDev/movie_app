@@ -8,10 +8,12 @@ platform :android do
    end
    def install_sdk_packages() 
      sh(
-       "sdkmanager --install \"system-images;android-30;google_apis_playstore;x86\" &&
-       sdkmanager --install \"system-images;android-22;google_apis;x86\" &&
-       sdkmanager --install \"system-images;android-28;google_apis_playstore;x86\""
+       "sdkmanager --install \"system-images;android-30;google_apis_playstore;x86\""
      )
+     sh(
+       "sdkmanager --install \"system-images;android-22;google_apis;x86\""
+     )
+     sh(" sdkmanager --install \"system-images;android-28;google_apis_playstore;x86\"")
    end
    def run_test_on_emulator(configFilePath)
      automated_test_emulator_run(
@@ -29,7 +31,7 @@ platform :android do
      )
    end
  
-   
+   install_sdk_packages
    case options[:api]
    when "22"
      run_test_on_emulator("./fastlane/AVD_API_22.json")
@@ -45,7 +47,7 @@ end
 
 lane :notifyFailure do |options|
   error do
-    sh("python3 mail.py --failure --no-attachment")
+    sh("py mail.py --failure --no-attachment")
   end
   def sendMailWithTestReport(apiLevel)
     begin
@@ -59,9 +61,9 @@ lane :notifyFailure do |options|
       verbose: true
     )
     sh("echo $GITHUB_JOB")
-    sh("python3 mail.py --failure")
+    sh("py mail.py --failure")
     rescue => exception
-      sh("python3 mail.py --failure --no-attachment")
+      sh("py mail.py --failure --no-attachment")
     end
   end
   lane :sendGoogleChatBotNoti do
@@ -69,13 +71,13 @@ lane :notifyFailure do |options|
     runId = ENV.fetch("GITHUB_RUN_ID") {""}
     google_chat(
       imageUrl: 'https://storage.googleapis.com/mmds_digi_zaay/logo/img_5fbba20a6df6d_1606132234.png',
-      webhook: 'https://chat.googleapis.com/v1/spaces/AAAAxCtsSio/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=y5lgFDrak4mevDAVHl-dpyWKmpUHdF4z30vRvhOh8Rk%3D',
+      webhook: 'https://chat.googleapis.com/v1/spaces/AAAAgPKr1oM/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=6Xh0lPSDz4tikP9bBu-9D09KQq0NtdCuiz5yS-VGNJw%3D',
       title: 'Jolly Theme One',
       description: "CI Job (##{runNumber}) on Github action Failed🚨",
       section1Title: 'Result',
       section1Description: 'Failed',
       buttonTitle: "See results",
-      buttonUrl: "https://github.com/mm-digital-solutions/mmDS-EMP-Android/actions/runs/#{runId}"
+      buttonUrl: "https://github.com/LucusDev/movie_app/actions/runs/#{runId}"
     )
   end
   apiLevel = options[:api]
@@ -85,20 +87,20 @@ end
 
 lane :notifySuccess do
   def sendMailWithTestReport()
-    sh("python3 mail.py --success")
+    sh("py mail.py --success")
   end
   lane :sendGoogleChatBotNoti do
     runNumber = ENV.fetch("GITHUB_RUN_NUMBER") {""}
     runId = ENV.fetch("GITHUB_RUN_ID") {""}
     google_chat(
       imageUrl: 'https://storage.googleapis.com/mmds_digi_zaay/logo/img_5fbba20a6df6d_1606132234.png',
-      webhook: 'https://chat.googleapis.com/v1/spaces/AAAAxCtsSio/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=y5lgFDrak4mevDAVHl-dpyWKmpUHdF4z30vRvhOh8Rk%3D',
+      webhook: 'https://chat.googleapis.com/v1/spaces/AAAAgPKr1oM/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=6Xh0lPSDz4tikP9bBu-9D09KQq0NtdCuiz5yS-VGNJw%3D',
       title: 'Jolly Theme One',
       description: 'CI Job on Github action Succeeded😎',
       section1Title: 'Result',
       section1Description: 'Success',
       buttonTitle: "See results",
-      buttonUrl: "https://github.com/mm-digital-solutions/mmDS-EMP-Android/runs/#{runId}"
+      buttonUrl: "https://github.com/LucusDev/movie_app/runs/#{runId}"
     )
   end
 

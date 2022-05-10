@@ -1,50 +1,58 @@
-import smtplib, email
+import smtplib
+import email
 from email import encoders
-from email.MIMEMultipart import MIMEMultipart
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 import os
 import argparse
-import json,io
+import json
+import io
 from bs4 import BeautifulSoup
-parser = argparse.ArgumentParser(description='Email companion program for fastlane')
-parser.add_argument("-s", "--success", help="Sends a successful email", action="store_true")
-parser.add_argument("-f", "--failure", help="Sends a failure email", action="store_true")
-parser.add_argument("--no-attachment", help="Skips attachment if set", action="store_true")
+parser = argparse.ArgumentParser(
+    description='Email companion program for fastlane')
+parser.add_argument("-s", "--success",
+                    help="Sends a successful email", action="store_true")
+parser.add_argument("-f", "--failure",
+                    help="Sends a failure email", action="store_true")
+parser.add_argument("--no-attachment",
+                    help="Skips attachment if set", action="store_true")
 args = parser.parse_args()
- 
-runId = os.getenv('GITHUB_RUN_ID' , "")
+
+runId = os.getenv('GITHUB_RUN_ID', "")
 runNumber = os.getenv('GITHUB_RUN_NUMBER')
 actionId = os.getenv('GITHUB_ACTION')
-apiLevel = os.getenv('API' , "")
-githubRunUrl = "https://github.com/mm-digital-solutions/mmDS-EMP-Android/actions/runs/%s"%(runId)
-githubActionUrl = "https://github.com/mm-digital-solutions/mmDS-EMP-Android/runs/%s?check_suite_focus=true"%(actionId)
- 
- 
- 
+apiLevel = os.getenv('API', "")
+githubRunUrl = "https://github.com/LucusDev/movie_app/actions/runs/%s" % (
+    runId)
+githubActionUrl = "https://github.com/LucusDev/movie_app/runs/%s?check_suite_focus=true" % (
+    actionId)
+
+
 # Settings
- 
+
 SMTP_SERVER = 'smtp.gmail.com'
 SMTP_PORT = 587
-SMTP_USERNAME = 'sales@mm-digital-solutions.com'
-SMTP_PASSWORD = 'bv78hbZI22iG'
-SMTP_FROM = 'sales@mm-digital-solutions.com'
-SMTP_TO = 'naingaung.luu@mm-digital-solutions.com'
- 
-TEXT_FILENAME = "./TestReport%sAPI%s.zip"%(runNumber, apiLevel)
- 
-SUCCESS_HEADER = "Jolly Theme One CI Job Successful (#%s)"%(runNumber)
+SMTP_USERNAME = 'mattp111222@gmail.com'
+SMTP_PASSWORD = '09250304264Aa'
+SMTP_FROM = 'mattp111222@gmail.com'
+SMTP_TO = 'newbtcearner@gmail.com'
+
+TEXT_FILENAME = "./TestReport%sAPI%s.zip" % (runNumber, apiLevel)
+
+SUCCESS_HEADER = "Jolly Theme One CI Job Successful (#%s)" % (runNumber)
 SUCCESS_MESSAGE = """\
 Test Automation (#%s) for Project Completed Successfully
 See the results here:
 %s
-"""%(runNumber, githubRunUrl)
- 
-FAILURE_HEADER = "Jolly Theme One CI Job Failure (#%s)"%(runNumber)
+""" % (runNumber, githubRunUrl)
+
+FAILURE_HEADER = "Jolly Theme One CI Job Failure (#%s)" % (runNumber)
 FAILURE_MESSAGE = """\
     There was a failure in Test Automation (#%s) for Project
 Please check the error log output here
 %s
-"""%(runNumber, githubRunUrl)
- 
+""" % (runNumber, githubRunUrl)
+
 HTML_TEMPLATE = """\
 <html>
 <head>
@@ -161,77 +169,79 @@ div.failures, #successRate.failures {
 </body>
 </html>
 """
- 
+
 jsonFile = open("MailRecipients.json").read()
 recipients = json.loads(jsonFile)
- 
+
 # Now construct the message
-msg = email.MIMEMultipart.MIMEMultipart()
- 
+msg = MIMEMultipart()
+
 msg.add_header('To', ",".join(recipients["mails"]))
 msg.add_header('From', SMTP_FROM)
-if args.success :
-   msg.add_header('Subject' , SUCCESS_HEADER)
-   body = email.MIMEText.MIMEText(SUCCESS_MESSAGE)
-elif args.failure :
-   msg.add_header('Subject' , FAILURE_HEADER)
-   body = email.MIMEText.MIMEText(FAILURE_MESSAGE)
- 
-   # importing
-   HTML_FILE_PATH = "./TestReport%sAPI%s/index.html"%(runNumber, apiLevel)
-   with io.open(HTML_FILE_PATH, "r", encoding="utf-8") as f:
-       mailBody= f.read()
- 
-   soup = BeautifulSoup(mailBody, 'html.parser')
-   counters = soup.find_all("div", class_="counter")
-   successRate = soup.find_all("div", class_="percent")[0].contents[0]
-   successRateClass = soup.find(id="successRate")['class'][1]
-   failedTests = soup.find(id="tab0")
-   print(failedTests.prettify())
-   testCount = counters[0].contents[0]
-   failures = counters[1].contents[0]
-   duration = counters[2].contents[0]
- 
-   htmlTemplate = BeautifulSoup(HTML_TEMPLATE, 'html.parser')
-   placeHolders = htmlTemplate.find_all("div", class_="counter")
-   htmlTemplate.find_all("div", class_="percent")[0].contents[0] = successRate
-   htmlTemplate.find(id="successRate")['class'][1] = successRateClass
-   placeHolders[0].contents[0] = testCount
-   placeHolders[1].contents[0] = failures
-   placeHolders[2].contents[0] = duration
- 
-   msgTestSummary = email.MIMEText.MIMEText(htmlTemplate.prettify(), 'html')
-   htmlTestSummaryPart = MIMEMultipart('alternative')
-   htmlTestSummaryPart.attach(msgTestSummary)
- 
-   msgFailedTests = email.MIMEText.MIMEText(failedTests.prettify(), 'html')
-   htmlFailedTestsPart = MIMEMultipart('alternative')
-   htmlFailedTestsPart.attach(msgFailedTests)
- 
-   msg.attach(body)
-   msg.attach(htmlTestSummaryPart)
-   msg.attach(htmlFailedTestsPart)
- 
-   # msgAlternative = MIMEMultipart('alternative')
-   # msg.attach(msgAlternative)
- 
-   # msgText = MIMEText('This is the alternative plain text message.')
-   # msgAlternative.attach(msgText)
- 
-   # # We reference the image in the IMG SRC attribute by the ID we give it below
-   # msgText = MIMEText(mailBody, 'html')
-   # msgAlternative.attach(msgText)
- 
-   if args.no_attachment != True :
-       attachment = email.MIMEBase.MIMEBase('application', 'octet-stream')
-       attachment.set_payload(open(TEXT_FILENAME).read())
-       attachment.add_header('Content-Disposition', 'attachment', filename=os.path.basename(TEXT_FILENAME))
-       encoders.encode_base64(attachment)
-       msg.attach(attachment)
- 
+if args.success:
+    msg.add_header('Subject', SUCCESS_HEADER)
+    body = MIMEText(SUCCESS_MESSAGE)
+elif args.failure:
+    msg.add_header('Subject', FAILURE_HEADER)
+    body = MIMEText(FAILURE_MESSAGE)
+
+    # importing
+   #  HTML_FILE_PATH = "./TestReport%sAPI%s/index.html" % (runNumber, apiLevel)
+   #  HTML_FILE_PATH = "./index.html"
+   #  with io.open(HTML_FILE_PATH, "r", encoding="utf-8") as f:
+   #      mailBody = f.read()
+
+   #  soup = BeautifulSoup(mailBody, 'html.parser')
+   #  counters = soup.find_all("div", class_="counter")
+   #  successRate = soup.find_all("div", class_="percent")[0].contents[0]
+   #  successRateClass = soup.find(id="successRate")['class'][1]
+   #  failedTests = soup.find(id="tab0")
+   #  print(failedTests.prettify())
+   #  testCount = counters[0].contents[0]
+   #  failures = counters[1].contents[0]
+   #  duration = counters[2].contents[0]
+
+   #  htmlTemplate = BeautifulSoup(HTML_TEMPLATE, 'html.parser')
+   #  placeHolders = htmlTemplate.find_all("div", class_="counter")
+   #  htmlTemplate.find_all("div", class_="percent")[0].contents[0] = successRate
+   #  htmlTemplate.find(id="successRate")['class'][1] = successRateClass
+   #  placeHolders[0].contents[0] = testCount
+   #  placeHolders[1].contents[0] = failures
+   #  placeHolders[2].contents[0] = duration
+
+   #  msgTestSummary = MIMEText(htmlTemplate.prettify(), 'html')
+   #  htmlTestSummaryPart = MIMEMultipart('alternative')
+   #  htmlTestSummaryPart.attach(msgTestSummary)
+
+   #  msgFailedTests = MIMEText(failedTests.prettify(), 'html')
+   #  htmlFailedTestsPart = MIMEMultipart('alternative')
+   #  htmlFailedTestsPart.attach(msgFailedTests)
+
+   #  msg.attach(body)
+   #  msg.attach(htmlTestSummaryPart)
+   #  msg.attach(htmlFailedTestsPart)
+
+   #  msgAlternative = MIMEMultipart('alternative')
+   #  msg.attach(msgAlternative)
+
+   #  msgText = MIMEText('This is the alternative plain text message.')
+   #  msgAlternative.attach(msgText)
+
+   #  # We reference the image in the IMG SRC attribute by the ID we give it below
+   #  msgText = MIMEText(body, 'html')
+   #  msgAlternative.attach(msgText)
+
+    if args.no_attachment != True:
+        attachment = email.MIMEBase.MIMEBase('application', 'octet-stream')
+        attachment.set_payload(open(TEXT_FILENAME).read())
+        attachment.add_header(
+            'Content-Disposition', 'attachment', filename=os.path.basename(TEXT_FILENAME))
+        encoders.encode_base64(attachment)
+        msg.attach(attachment)
+
 # msg.attach(body)
- 
- 
+
+
 # Now send the message
 mailer = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
 # EDIT: mailer is already connected
