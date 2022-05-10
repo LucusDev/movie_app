@@ -1,0 +1,110 @@
+default_platform(:android)
+ 
+platform :android do
+ desc "Runs all the tests"
+ lane :test do |options|
+   error do |lane, exception|
+     notifyFailure api:options[:api]
+   end
+   def install_sdk_packages() 
+     sh(
+       "sdkmanager --install \"system-images;android-30;google_apis_playstore;x86\""
+     )
+     sh(
+       "sdkmanager --install \"system-images;android-22;google_apis;x86\""
+     )
+     sh(" sdkmanager --install \"system-images;android-28;google_apis_playstore;x86\"")
+   end
+   def run_test_on_emulator(configFilePath)
+     automated_test_emulator_run(
+           AVD_setup_path: configFilePath,
+           AVD_recreate_new: false,
+           AVD_clean_after: false,
+           AVD_param_launch_timeout: "1000",
+           AVD_adb_launch_timeout: "2000",
+           shell_task:"
+           bash fastlane/adb-all shell \"settings put global animator_duration_scale 0.0 &&
+           settings put global window_animation_scale 0.0 &&
+           settings put global transition_animation_scale 0.0\" &&
+           ./gradlew fashion:connectedOSCDebugAndroidTest --info --no-parallel
+           "
+     )
+   end
+ 
+   install_sdk_packages
+   case options[:api]
+   when "22"
+     run_test_on_emulator("./fastlane/AVD_API_22.json")
+   when "28"
+    run_test_on_emulator("./fastlane/AVD_API_28.json")
+  when "30"
+    run_test_on_emulator("./fastlane/AVD_API_30.json")
+  end
+  notifySuccess
+  api = options[:api]
+  notifyFailure api:api
+end
+
+lane :notifyFailure do |options|
+  error do
+    sh("py mail.py --failure --no-attachment")
+  end
+  def sendMailWithTestReport(apiLevel)
+    begin
+    runNumber = ENV.fetch("GITHUB_RUN_NUMBER") {""}
+    runId = ENV.fetch("GITHUB_RUN_ID") {""}
+    sh("cd ../ && rm -r app/build/reports/androidTests/connected/flavors/prod/js")
+    sh("cd ../ && cp -R app/build/reports/androidTests/connected/flavors/prod fastlane/TestReport#{runNumber}API#{apiLevel}")
+    zip(
+      path: "fastlane/TestReport#{runNumber}API#{apiLevel}",
+      output_path: "fastlane/TestReport#{runNumber}API#{apiLevel}.zip",
+      verbose: true
+    )
+    sh("echo $GITHUB_JOB")
+    sh("py mail.py --failure")
+    rescue => exception
+      sh("py mail.py --failure --no-attachment")
+    end
+  end
+  lane :sendGoogleChatBotNoti do
+    runNumber = ENV.fetch("GITHUB_RUN_NUMBER") {""}
+    runId = ENV.fetch("GITHUB_RUN_ID") {""}
+    google_chat(
+      imageUrl: 'https://storage.googleapis.com/mmds_digi_zaay/logo/img_5fbba20a6df6d_1606132234.png',
+      webhook: 'https://chat.googleapis.com/v1/spaces/AAAAgPKr1oM/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=6Xh0lPSDz4tikP9bBu-9D09KQq0NtdCuiz5yS-VGNJw%3D',
+      title: 'Jolly Theme One',
+      description: "CI Job (##{runNumber}) on Github action Failed🚨",
+      section1Title: 'Result',
+      section1Description: 'Failed',
+      buttonTitle: "See results",
+      buttonUrl: "https://github.com/LucusDev/movie_app/actions/runs/#{runId}"
+    )
+  end
+  apiLevel = options[:api]
+  sendMailWithTestReport(apiLevel)
+  sendGoogleChatBotNoti
+end
+
+lane :notifySuccess do
+  def sendMailWithTestReport()
+    sh("py mail.py --success")
+  end
+  lane :sendGoogleChatBotNoti do
+    runNumber = ENV.fetch("GITHUB_RUN_NUMBER") {""}
+    runId = ENV.fetch("GITHUB_RUN_ID") {""}
+    google_chat(
+      imageUrl: 'https://storage.googleapis.com/mmds_digi_zaay/logo/img_5fbba20a6df6d_1606132234.png',
+      webhook: 'https://chat.googleapis.com/v1/spaces/AAAAgPKr1oM/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=6Xh0lPSDz4tikP9bBu-9D09KQq0NtdCuiz5yS-VGNJw%3D',
+      title: 'Jolly Theme One',
+      description: 'CI Job on Github action Succeeded😎',
+      section1Title: 'Result',
+      section1Description: 'Success',
+      buttonTitle: "See results",
+      buttonUrl: "https://github.com/LucusDev/movie_app/runs/#{runId}"
+    )
+  end
+
+  sendMailWithTestReport
+  sendGoogleChatBotNoti
+end
+end

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="fastlane.lanes">
+    
+    
+    
+      
+      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.0015891">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="1: sdkmanager --install &quot;system-images;android-30;google_apis_playstore;x86&quot;" time="7.3899975">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="2: sdkmanager --install &quot;system-images;android-22;google_apis;x86&quot;" time="8.1814333">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="3:  sdkmanager --install &quot;system-images;android-28;google_apis_playstore;x86&quot;" time="6.7614196">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="4: Switch to android notifySuccess lane" time="0.0021146">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="5: py mail.py --success" time="4.107557">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="6: Switch to android sendGoogleChatBotNoti lane" time="0.0018214">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="7: google_chat" time="1.703695">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="8: Switch to android notifyFailure lane" time="0.0020297">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="9: py mail.py --failure --no-attachment" time="4.4830022">
+        
+      </testcase>
+    
+  </testsuite>
+</testsuites>
