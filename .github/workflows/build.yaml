@@ -36,5 +36,7 @@ jobs:
 
       - name: Run Tests With Fastlane
         env:
+          LC_ALL: en_US.UTF-8
+          LANG: en_US.UTF-8
           API: ${{matrix.api-level}}
         run: bundle exec fastlane test api:$API
