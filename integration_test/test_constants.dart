@@ -1,6 +1,6 @@
 //Now Playing Section Constants
 const kNowPlayingMovieName = "All the Old Knives"; //294793
-const kNowPlayingMovieVote = "204 VOTES";
+const kNowPlayingMovieVote = "205 VOTES";
 const kNowPlayingMovieScore = "1438";
 const kNowPlayingMovieStoryLine =
     "When the CIA discovers one of its agents leaked information that cost more than 100 people their lives, veteran operative Henry Pelham is assigned to root out the mole with his former lover and colleague Celia Harrison.";
@@ -18,8 +18,8 @@ const kNowPlayingMovieGenres = [
 
 //Popular Section Constants
 const kPopularMovieName = "Doctor Strange"; //284052
-const kPopularMovieVote = "18868 VOTES";
-const kPopularMovieScore = "3570";
+const kPopularMovieVote = "18881 VOTES";
+const kPopularMovieScore = "3189";
 const kPopularMovieStoryLine =
     "After his career is destroyed, a brilliant but arrogant surgeon gets a new lease on life when a sorcerer takes him under her wing and trains him to defend the world against evil.";
 const kPopularMovieActor = "Benedict Cumberbatch";
@@ -38,7 +38,7 @@ const kPopularMovieGenres = [
 //Genre Section Constants
 const kGenre = "Animation";
 const kMovieByGenreName = "The Bad Guys"; //629542
-const kMovieByGenreVote = "271 VOTES";
+const kMovieByGenreVote = "287 VOTES";
 const kMovieByGenreScore = "4294";
 const kMovieByGenreStoryLine =
     "When the infamous Bad Guys are finally caught after years of countless heists and being the world’s most-wanted villains, Mr. Wolf brokers a deal to save them all from prison.";
@@ -58,7 +58,7 @@ const kMovieByGenreGenres = [
 
 //ShowCase Section Constants
 const kShowCaseMovie = "Spirited Away"; //129
-const kShowCaseMovieVote = "12779 VOTES";
+const kShowCaseMovieVote = "12781 VOTES";
 const kShowCaseMovieScore = "88";
 const kShowCaseMovieStoryLine =
     "A young girl, Chihiro, becomes trapped in a strange new world of spirits. When her parents undergo a mysterious transformation, she must call upon the courage she never knew she had to free her family.";
