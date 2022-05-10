@@ -27,16 +27,11 @@ jobs:
           java-version: "8"
           distribution: "adopt"
       - name: Setup Fastlane
-        run: bundle install --local
-      - name: Setup Fastlane2
-        run: bundle update --local
-
-      - name: go into android
-        run: cd android
-
+        run: bundle install & bundle update --local
       - name: Run Tests With Fastlane
         env:
           LC_ALL: en_US.UTF-8
           LANG: en_US.UTF-8
           API: ${{matrix.api-level}}
+        working-directory: ./android
         run: bundle exec fastlane test api:$API
