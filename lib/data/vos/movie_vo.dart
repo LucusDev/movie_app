@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:movie_app/data/vos/genre_vo.dart';
@@ -76,8 +77,42 @@ class MovieVO {
     this.genres = const [],
   });
 
+  @override
+  int get hashCode =>
+      id.hashCode +
+      originalTitle.hashCode +
+      overview.hashCode +
+      popularity.hashCode +
+      posterPath.hashCode +
+      releaseDate.hashCode +
+      runtime.hashCode +
+      title.hashCode +
+      productionCountries.hashCode +
+      voteAverage.hashCode +
+      voteCount.hashCode +
+      genres.hashCode;
+
   factory MovieVO.fromJson(Map<String, dynamic> json) =>
       _$MovieVOFromJson(json);
 
   Map<String, dynamic> toJson() => _$MovieVOToJson(this);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is MovieVO &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          type == other.type &&
+          originalTitle == other.originalTitle &&
+          overview == other.overview &&
+          popularity == other.popularity &&
+          posterPath == other.posterPath &&
+          releaseDate == other.releaseDate &&
+          runtime == other.runtime &&
+          title == other.title &&
+          listEquals(productionCountries, other.productionCountries) &&
+          voteAverage == other.voteAverage &&
+          voteCount == other.voteCount &&
+          listEquals(genres, other.genres);
 }

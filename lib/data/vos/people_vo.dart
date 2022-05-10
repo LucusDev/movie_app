@@ -28,4 +28,16 @@ class PeopleVO {
       _$PeopleVOFromJson(json);
 
   Map<String, dynamic> toJson() => _$PeopleVOToJson(this);
+
+  @override
+  int get hashCode => id.hashCode + name.hashCode + profilePath.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PeopleVO &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          name == other.name &&
+          profilePath == other.profilePath;
 }

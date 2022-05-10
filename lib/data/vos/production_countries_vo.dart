@@ -22,4 +22,15 @@ class ProductionCountriesVO {
       _$ProductionCountriesVOFromJson(json);
 
   Map<String, dynamic> toJson() => _$ProductionCountriesVOToJson(this);
+
+  @override
+  int get hashCode => name.hashCode + iso31661.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ProductionCountriesVO &&
+          runtimeType == other.runtimeType &&
+          name == other.name &&
+          iso31661 == other.iso31661;
 }

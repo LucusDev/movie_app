@@ -48,7 +48,9 @@ class _NowPlayingMovieSectionViewState
             controller: controller,
             itemBuilder: (context, index) {
               final item = data.elementAt(index);
-              return NowPlayingRowItem(item: item);
+              return NowPlayingRowItem(
+                item: item,
+              );
             },
             itemCount: data.length.clamp(0, 5),
           ),

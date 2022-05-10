@@ -29,10 +29,6 @@ class DetailPage extends StatelessWidget {
                         children: [
                           movieDetail == null
                               ? Scaffold(
-                                  // backgroundColor: movieDetail == null
-                                  //     ? Constant.primaryColor.withOpacity(0.3)
-                                  //     : Theme.of(context)
-                                  //         .scaffoldBackgroundColor,
                                   body: Center(
                                       child: Container(
                                     padding: const EdgeInsets.all(20),
@@ -48,43 +44,46 @@ class DetailPage extends StatelessWidget {
                               : Scaffold(
                                   body: SafeArea(
                                     child: CustomScrollView(
+                                      shrinkWrap: true,
                                       slivers: [
                                         ///Detail Header
                                         DetailHeader(movie: movieDetail),
 
-                                        ///Convert Widgets to Sliver
-                                        SliverList(
-                                          delegate: SliverChildListDelegate(
-                                            [
-                                              ///Genre and Total Duration Section
-                                              TimeGenreRow(movie: movieDetail),
+                                        ///Genre and Total Duration Section
+                                        SliverToBoxAdapter(
+                                            child: TimeGenreRow(
+                                                movie: movieDetail)),
 
-                                              ///StoryLine Section View
-                                              StoryLine(
-                                                  storyline:
-                                                      movieDetail.overview ??
-                                                          ""),
+                                        ///StoryLine Section View
+                                        SliverToBoxAdapter(
+                                          child: StoryLine(
+                                              storyline:
+                                                  movieDetail.overview ?? ""),
+                                        ),
 
-                                              ///Actors Section
-                                              PersonRow(
-                                                type: "ACTORS",
-                                                peopleList:
-                                                    movieDetail.credits.cast,
-                                              ),
-
-                                              ///Film Detail Section
-                                              FilmDetail(movie: movieDetail),
-
-                                              ///Creators Section
-                                              PersonRow(
-                                                isMore: true,
-                                                type: "CREATORS",
-                                                peopleList:
-                                                    movieDetail.credits.crew,
-                                              ),
-                                            ],
+                                        ///Actors Section
+                                        SliverToBoxAdapter(
+                                          child: PersonRow(
+                                            type: "ACTORS",
+                                            peopleList:
+                                                movieDetail.credits.cast,
                                           ),
-                                        )
+                                        ),
+
+                                        ///Film Detail Section
+                                        SliverToBoxAdapter(
+                                            child:
+                                                FilmDetail(movie: movieDetail)),
+
+                                        ///Creators Section
+                                        SliverToBoxAdapter(
+                                          child: PersonRow(
+                                            isMore: true,
+                                            type: "CREATORS",
+                                            peopleList:
+                                                movieDetail.credits.crew,
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ),
