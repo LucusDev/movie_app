@@ -26,7 +26,7 @@ platform :android do
            bash fastlane/adb-all shell \"settings put global animator_duration_scale 0.0 &&
            settings put global window_animation_scale 0.0 &&
            settings put global transition_animation_scale 0.0\" &&
-           ./gradlew fashion:connectedOSCDebugAndroidTest --info --no-parallel
+           ./gradlew app:connectedDebugAndroidTest --info -Ptarget=integration_test/app_test.dart --no-parallel
            "
      )
    end
